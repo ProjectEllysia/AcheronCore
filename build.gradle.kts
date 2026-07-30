@@ -65,14 +65,14 @@ publishing {
             pom {
                 name.set("Acheron Core")
                 description.set("Zero-knowledge vault crypto engine for Ellysia")
-                url.set("https://github.com/ProjectEllysia/acheron-core")
+                url.set("https://github.com/ProjectEllysia/AcheronCore")
             }
         }
     }
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/ProjectEllysia/acheron-core")
+            url = uri("https://maven.pkg.github.com/ProjectEllysia/AcheronCore")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                     ?: providers.gradleProperty("gpr.user").orNull

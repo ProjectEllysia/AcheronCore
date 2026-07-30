@@ -34,7 +34,7 @@ En `settings.gradle.kts` (o donde declares los repositorios):
 
 ```kotlin
 maven {
-    url = uri("https://maven.pkg.github.com/ProjectEllysia/acheron-core")
+    url = uri("https://maven.pkg.github.com/ProjectEllysia/AcheronCore")
     credentials {
         username = providers.gradleProperty("gpr.user").orNull ?: System.getenv("GITHUB_ACTOR")
         password = providers.gradleProperty("gpr.token").orNull ?: System.getenv("GITHUB_TOKEN")
@@ -68,7 +68,7 @@ implementation("com.ellysia:acheron-core:1.0.0")
 <repositories>
   <repository>
     <id>github-acheron</id>
-    <url>https://maven.pkg.github.com/ProjectEllysia/acheron-core</url>
+    <url>https://maven.pkg.github.com/ProjectEllysia/AcheronCore</url>
   </repository>
 </repositories>
 

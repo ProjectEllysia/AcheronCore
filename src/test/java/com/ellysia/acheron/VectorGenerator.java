@@ -34,12 +34,13 @@ import java.util.Date;
  * texto plano esperados. El test JS (web/app/test/acheron.interop.test.mjs)
  * abre esos vaults y comprueba que descifra exactamente lo esperado.
  *
- * No es un test de aserción: es un generador. Se ejecuta a propósito con:
+ * No es un test de aserción: es un generador. Corre con el resto de la suite
+ * ({@code ./gradlew test}) o aislado con:
  *
- *   mvn -q -Dtest=VectorGenerator -DfailIfNoTests=false \
- *       -Dvectors.out=&lt;repo&gt;/tests/acheron-vectors.json test
+ *   ./gradlew test --tests '*VectorGenerator'
  *
- * Salida por defecto: target/acheron-vectors.json (si no se pasa vectors.out).
+ * Salida por defecto: build/acheron-vectors.json (build.gradle.kts fija la
+ * propiedad vectors.out). El CI la sube como artefacto "acheron-vectors".
  */
 public class VectorGenerator {
 
@@ -55,7 +56,7 @@ public class VectorGenerator {
         JsonObject root = new JsonObject();
         root.add("cases", cases);
 
-        String out = System.getProperty("vectors.out", "target/acheron-vectors.json");
+        String out = System.getProperty("vectors.out", "build/acheron-vectors.json");
         Path path = Paths.get(out).toAbsolutePath();
         Files.createDirectories(path.getParent());
 

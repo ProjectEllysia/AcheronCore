@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    name: Suites
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # package-lock.json esta en .gitignore, asi que no hay lockfile que
+      # cachear ni con el que hacer `npm ci`.
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      # Entre las suites va la de interoperabilidad, que comprueba contra los
+      # vectores de AcheronCore que este motor sigue hablando el mismo formato
+      # de cable que la implementacion Java.
+      - name: Run suites
+        run: npm test

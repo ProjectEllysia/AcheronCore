@@ -24,8 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      # Entre las suites va la de interoperabilidad, que comprueba contra los
-      # vectores de AcheronCore que este motor sigue hablando el mismo formato
-      # de cable que la implementacion Java.
-      - name: Run suites
+      # npm test compila antes (pretest), asi que esto cubre tipos y
+      # comportamiento. Entre las suites va la de interoperabilidad, que
+      # comprueba contra los vectores de AcheronCore que este motor sigue
+      # hablando el mismo formato de cable que la implementacion Java.
+      - name: Typecheck and run suites
         run: npm test

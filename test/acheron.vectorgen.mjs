@@ -29,9 +29,9 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
-import { openVault, createVault } from '../src/vault.js'
+import { openVault, createVault } from '../dist/src/vault.js'
 import { deriveKey, aesGcmEncrypt, sha256Hex, generateSaltB64, randomBytes, b64encode }
-  from '../src/crypto.js'
+  from '../dist/src/crypto.js'
 
 const USERNAME = 'alice'
 const MASTER_PASSWORD = 'correct horse battery staple'

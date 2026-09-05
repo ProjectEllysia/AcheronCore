@@ -6,61 +6,61 @@
       "username": "alice",
       "vault": {
         "version": 1,
-        "checker": "459QRDOASk87AuJOlyP3KJIbsLoDT7XEj+SClAXF9iJMbXnZSfY83W416o94rPi3iulZg4wiEv49YPfSTr28V/BRY4aVVZLWLGxmUOESL4Hb+qa12q4YI/akers=",
-        "vaultKey": "NGZkACk1JN7o05YE6I4GYo+7qydPQeMZRVwfaWn3Lv7b8zSYPMmnzTnO/dUuAX6i5W4gJBw4nsoJEvvapwmHjJznIGpMzBb5",
+        "checker": "V+MQmj/tA4vhoVjPtlXWnV6d4ytGThd7qMwFmuqCtw5a7EYoxmQcTsFygKwpeVSrTafRzlgZQTeH/VAzG/n4V8u9iaG9/M0KqXEn/OuM4stpQvyPu3CqNq9v44E=",
+        "vaultKey": "GkJkRpIh8YqhgQNFaiQC1EV5v1wsjeLSwfevmPwBizorsJPNp3NsXP881O6qaiagrkyekz//2imrnD0lEEFu6cgYGimvZbj4",
         "algorithm": {
           "transformation": "AES/GCM/NoPadding",
           "kdf": "Argon2",
           "kdfIterations": "3",
           "kdfMemoryKiB": "65536",
           "kdfParallelism": "1",
-          "salt": "8I/cLmJto1ZV4Jyoc9fKtg=="
+          "salt": "teAmPoSG2T/H79h/YpP5AQ=="
         },
         "accounts": [
           {
-            "id": "3ddda920be1ad1e5",
+            "id": "ab255d6749f62125",
             "allowedUsers": [],
-            "title": "PM3uQ+NhS1z7bo+s3MSj0HEPAO6za0IgCKmgBkyec9F1",
-            "createdAt": "2026-09-05T16:26:30.178Z",
-            "updatedAt": "2026-09-05T16:26:30.178Z",
-            "username": "wVdCIU7T6SI4GDYtpgMlM3EKfXOOpbs2VL7fdOr7kcGgC59HkDjuggd1Sg==",
-            "domain": "2fD/LgIvMXgHyD+gavYzrne+3Y+iIGaY0vT4ll1mk12C4HwDvXkqq15qeQ==",
-            "password": "y5EgrnJc2HZCuawbGftBIajWpwuBSguZwIIDsJsVOj7J222/64fM+3z2"
+            "title": "i4565hHKkIeuYddcl4qg44AW/MM/ejHQ3aY7Y8xdUb6+",
+            "createdAt": "2026-09-05T19:01:59.137Z",
+            "updatedAt": "2026-09-05T19:01:59.137Z",
+            "username": "8G/5AY+eWvRm07VgzwRgKCl4JpNpHb9xQ0marRm3VjksY6Pnh5SdUhBNMw==",
+            "domain": "DYN2j63fMoT2ILk2iF+mz2H8QV5iTEmFc7E3iM05q3qrzZysUj2AatVQ4Q==",
+            "password": "JH/KbzfEG+RxzdiIPYyBr5fnLJKRJirFT9Qy0kkY3IC9h0bOOlF6jIiS"
           }
         ],
         "creditcards": [
           {
-            "id": "e0f40c964d8d1215",
+            "id": "24262d82f5deb19a",
             "allowedUsers": [],
-            "title": "Q5fdbcFH8mGqgItD/7ppR89m2gEl9tk5EOaM7tbmBdJwJec6rwN+xIk=",
-            "createdAt": "2026-09-05T16:26:30.180Z",
-            "updatedAt": "2026-09-05T16:26:30.180Z",
-            "cardHolderName": "C8ttoqaicE8dPu/gtACqVm7c9L6f9gRPpKuDJfUmee80hr3pzA==",
-            "cardNumber": "/cUQhCiAMS87S0dWapyPv92rDYS+lzYRTZWNaGy38SiPMoMvZq2oGtNfkGY=",
-            "expirationDate": "Lp/lPY2o2uefiZcsC1psHJKsrP/NR6MPNhKnOST6t9fW",
-            "cvv": "DL+kTsRFc5TjkPcFtq06SgBffIdS6bRDcnNyctHiRA==",
-            "postalCode": "fjl9IJtnm88lW/tatFzzOKisfLYSVvzolbZta7CgXpzF"
+            "title": "6SceF+eKuH5j0IIBOTfI/+yzEHEfEHTJDkxesGS8gxa9eHN1tTmvKxI=",
+            "createdAt": "2026-09-05T19:01:59.139Z",
+            "updatedAt": "2026-09-05T19:01:59.139Z",
+            "cardHolderName": "RDNpSMXBM9d+rL6SSI0wyGfOgw6VW29IhRDy0XnVT1C7mR0bbg==",
+            "cardNumber": "Wx410ILmp+qijC3eqVEPOCdPlfVig/lpfsctkrKfX5OGIDrgk9QVY6dpxnA=",
+            "expirationDate": "uNom4snzzumhPV3p8C8ivNJsa3RIF03tEuxJQ/E8t0I8",
+            "cvv": "dJSD83P5L1G5L86nNyR1y34VjrsandeIaKVJhuUfJA==",
+            "postalCode": "fPg0+IK0T92ZuuFF2BPJ2ujXlw0MNL5K1s3ycP8c6tdZ"
           }
         ],
         "securenotes": [
           {
-            "id": "ae65090295f5d569",
+            "id": "9cd97e9876b4bec6",
             "allowedUsers": [],
-            "title": "XsqeH+UWJ3qby7I0v3zVkOt5g9IF+0K1gtJholOwQD9YwIRmIUNGynWG",
-            "createdAt": "2026-09-05T16:26:30.181Z",
-            "updatedAt": "2026-09-05T16:26:30.181Z",
-            "content": "j8G35zRrs1ooyCPYt6QuOc1V/Wdthz7dqJ5ge7ksXW7ST/o8+PerdVBDaT8d3WN9FJzWaVxL6OZi+Puu2aV3q5W8gqbAdAavhUSavV+nzRs="
+            "title": "YLVmuo864o64F2pQjqxiqQ5xNRyuErxHOMo1uqADvk7KAKpA+ttXTSRY",
+            "createdAt": "2026-09-05T19:01:59.139Z",
+            "updatedAt": "2026-09-05T19:01:59.139Z",
+            "content": "T1ZjxuQj3PeMSzg3V3VYdMmM/XR27qHv4wcsqfte0yAjIVV1Cl42F7Sx6FU4lL1BkQt2PosDynQDclptdSAHR8NE0MgK0oe1D7HIAc/tQs4="
           }
         ]
       },
       "expected": {
-        "3ddda920be1ad1e5": {
+        "ab255d6749f62125": {
           "title": "Gmail",
           "username": "alice@gmail.com",
           "domain": "mail.google.com",
           "password": "P@ssw0rd-acc-0"
         },
-        "e0f40c964d8d1215": {
+        "24262d82f5deb19a": {
           "title": "Personal Card",
           "cardHolderName": "ALICE DOE",
           "cardNumber": "4111111111111111",
@@ -68,7 +68,7 @@
           "postalCode": "28001",
           "cvv": "123"
         },
-        "ae65090295f5d569": {
+        "9cd97e9876b4bec6": {
           "title": "Recovery codes",
           "content": "linea uno\nlinea dos con acentos: ñ á ü\nlinea tres"
         }
@@ -85,55 +85,55 @@
           "kdf": "PBKDF2",
           "kdfIterations": "600000",
           "kdfKeyLength": "256",
-          "salt": "dTI/fLCXFaaPzoKZgvqrgA=="
+          "salt": "5eCglTpYcYhAyEcUMCmUrA=="
         },
-        "checker": "kFy5dTbY1y5jm5py4XV4XwIehynWrbpu/bl3LiqrtlyTGkORE7Q7ZWYMzPIBLoPUTjnEGoN9i6DzwEaPEKRcSGF3fW3sLKU+qgszeUGZ+8mT9a68lxiWATaSTlQ=",
-        "vaultKey": "+/6K4gcjOV5Bpw26zaswwoVRgWP2NKDejrnzFghI1EuheNUZ+aBqmYQVKn5relO9WrGyGV6rUm+9uKX8jRadAK+hsvC2UILE",
+        "checker": "L5jigq3KcgXZycpu/SVCfvru4726i78za9jZoK3XcXX7+wD4mwL327raQ6J4qAxr2n1FPpYgusgwgdKFSizViaq9OmGKVcEFWTcmEJ8wTIOVWy3BqnuADr0m0NM=",
+        "vaultKey": "3qrDzr/TVY9jAvyIuPrmNnln2w03rpfkqIqP9iGwgzAeol8h+FpjsV3kcfXy60bSJJa9yXRCcabGhCKkVXx/NOqcwCeZ93OQ",
         "accounts": [
           {
-            "id": "8205336915d69640",
+            "id": "d4472d14bb0b3d15",
             "allowedUsers": [],
-            "title": "pbo42IiQ1H9OUFOy9RLBevsPY60cjFuoRu/xbAUIqHYn",
-            "createdAt": "2026-09-05T16:26:30.307Z",
-            "updatedAt": "2026-09-05T16:26:30.307Z",
-            "username": "DH4lHcHrkGPydkTToWk0ht1Lr2N26dpGXrfGeFJO16MlHNrM4lcj8R/JfA==",
-            "domain": "3hahIjchwIDzPlX4YnuKTLjt/Vtc86lhhriZS5LfaiLb95aXY5YkLOdrSQ==",
-            "password": "25djE3doRLzNsnedr1PRHWQZChV0dANkXFQjsQAuv8gGVNquywa0yRk7"
+            "title": "DSoHJC0Ys8hj+PbtupsR6z4bwHXbWs3qNdYzeNX21eBC",
+            "createdAt": "2026-09-05T19:01:59.274Z",
+            "updatedAt": "2026-09-05T19:01:59.274Z",
+            "username": "h9kK+aS6gddtL1lv+PbPQ6uDNLeyvjc7qC4N8irtYFR4Pfkt0H5eo4qSQg==",
+            "domain": "fFYKzuUb9t3WIr9ZElQ5zVVbbKVcypLa/hhCKUogXF5iqAoYHSHJKiichQ==",
+            "password": "8pNX0m2ErVeQQJTmexKYAXQaHqkr8sJ/P7lIjnvVCgdLhKPbHWydFIcI"
           }
         ],
         "creditcards": [
           {
-            "id": "2c27dcf1dd4ba5ab",
+            "id": "62a0304f1931b286",
             "allowedUsers": [],
-            "title": "6MGDZCVUfTXbFJYKrs9ZqJTRTY6HzuLdyrxf6LN+d8rzF989V5Qo7uc=",
-            "createdAt": "2026-09-05T16:26:30.307Z",
-            "updatedAt": "2026-09-05T16:26:30.307Z",
-            "cardHolderName": "p0rz83nKaVMG8IlXwQwepVyq9xk5NtFmzK3nfljLMrHf6R7g+w==",
-            "cardNumber": "fDz9VrQ0ZrS8Q7W/xSDaxkSznbY1qqavgmJRMbY53/q0MaB5HxGHvIbCgH0=",
-            "expirationDate": "9rtiRC5dpi7QfzHwKJP8i5mjl4eszkGf7gwiU0MgGrGL",
-            "cvv": "w6t8JcSvLNQHDNAn64vNTDKEc+qL+Ac1hgsZb5aXCg==",
-            "postalCode": "DtRJr2aTpSGe3mLeu4pcu+DIPJBIBroAs8kNrNRJG6PL"
+            "title": "fgLrDrQJq1PZcRXdxOB0HWjJcAjS9KVR0oADfQm392GPSL/n6xYgDLc=",
+            "createdAt": "2026-09-05T19:01:59.274Z",
+            "updatedAt": "2026-09-05T19:01:59.274Z",
+            "cardHolderName": "Ig2MTeZf6iZOCxy+bPK3O402XDBHcLCPSuTddX+y4JOyRryhtg==",
+            "cardNumber": "NOAjE7HDmCSqV/rKLTwZvGa9QItRX7CrkrAcrG0XF21NJ7vZuoa0aClirLw=",
+            "expirationDate": "+NGTf9t2jeryQT4B/yTLwT1WUe9tJB5FYB6hrCIPWehj",
+            "cvv": "tMw4xc/hzbO4CcZYLcLYhG01i9G8y6ST88pqGr57CQ==",
+            "postalCode": "ge9yPh4g8aWkRDk/xpzQngq4EvcKcWwI118dOKbGok4Q"
           }
         ],
         "securenotes": [
           {
-            "id": "2402bd69c4358c20",
+            "id": "d82de1cc77b72cd5",
             "allowedUsers": [],
-            "title": "pB7D98TES/5tWTyHCpT/hDsz44UD++2CxXqyD0wPus805ud6GGJIyVmY",
-            "createdAt": "2026-09-05T16:26:30.307Z",
-            "updatedAt": "2026-09-05T16:26:30.307Z",
-            "content": "yi9lSYRC9oaW6C1FQQkKOo+YmIV3a+6iUwSmz//GJ+sLEaAwAWwMZoVbUCuFeYCIyU3qH24sL7vtDCuTzEOis1SeuF5XXk1DMTNlhpQd3mQ="
+            "title": "3NnzCUH2pSLtt8KsTfrxQEKiPws1erQtDlQp/Yww0YkJI823WKrPwLc/",
+            "createdAt": "2026-09-05T19:01:59.275Z",
+            "updatedAt": "2026-09-05T19:01:59.275Z",
+            "content": "5te5vsRg4nC9sU7t4YNSUivs5YULXIeMJQc728ZBOMBiIjehyTY5xvcYwOVroT3dmIpqN7WClNi2Ah3EuQfGS8LN8//k/APNVOWS9HcwYWA="
           }
         ]
       },
       "expected": {
-        "8205336915d69640": {
+        "d4472d14bb0b3d15": {
           "title": "Gmail",
           "username": "alice@gmail.com",
           "domain": "mail.google.com",
           "password": "P@ssw0rd-acc-0"
         },
-        "2c27dcf1dd4ba5ab": {
+        "62a0304f1931b286": {
           "title": "Personal Card",
           "cardHolderName": "ALICE DOE",
           "cardNumber": "4111111111111111",
@@ -141,7 +141,7 @@
           "postalCode": "28001",
           "cvv": "123"
         },
-        "2402bd69c4358c20": {
+        "d82de1cc77b72cd5": {
           "title": "Recovery codes",
           "content": "linea uno\nlinea dos con acentos: ñ á ü\nlinea tres"
         }
@@ -153,61 +153,61 @@
       "username": "alice",
       "vault": {
         "version": 1,
-        "checker": "b8KdWJvnfcTfdQ/hDCRpwFXkjy2t8S5kc/cPb9Krtsk8NYR1wDotnLN4FXfwwtR6U+rE0U+zPS6msivXgh7P09BqrJrEnK2BcKBMjM1uHjhSfhQE6Skvt4sgmns=",
-        "vaultKey": "xJkJOhq5X2pWyaHdPPbdLkgpSb2d0vbBmUmGYDYPBJ55sC0FYnhV4OTtOcirVG6ai2JGM2HtD60V/hlAu+aM36/orFeHx7he",
+        "checker": "4wmSNFrcwrcSaaTiTQcyj68TJg9iJvrX7JobV3gBlaMY2mZ7Qh4q8tnuAlRVW9RT2pKW1tfzQd/3nZ3yu5eJpferfQqNIW8hajN25recMX3USGRzcsBPwz2M1g0=",
+        "vaultKey": "Q8Q7j8evtTXlilePWnJWQyc6xXKKFBkBKrinZ1daLdF1lXom8v04DxzwJAfBfpwRZItp+y+e/yrdhRmhevEde3jG4I74ayP2",
         "algorithm": {
           "transformation": "AES/GCM/NoPadding",
           "kdf": "Argon2",
           "kdfIterations": "3",
           "kdfMemoryKiB": "65536",
           "kdfParallelism": "1",
-          "salt": "/9EQjnah2NM1LMzkPswOPQ=="
+          "salt": "ydG9dcTHEHfgq/xZG2O5Ng=="
         },
         "accounts": [
           {
-            "id": "a97336f1a9dfb16c",
+            "id": "5886f91a3f1f31ac",
             "allowedUsers": [],
-            "title": "jqxyisTHtolMo+N1WylWs9vQIcLb3QR87grspn2mqY1R",
-            "createdAt": "2026-09-05T16:26:30.561Z",
-            "updatedAt": "2026-09-05T16:26:30.561Z",
-            "username": "3uDdbLkZhQlF8vAF7bkk5lRrVMzIIvYwO4uy0mx7xWWsMxDBDwN4CdUR4A==",
-            "domain": "YNbAB4GXuCdsl5Y6ewEsjpPq1ClAlEjYQXGjJsXIdEoP82kTaHsXX6CvrA==",
-            "password": "bwqufwk/HP76/NKFUGLR2skOQwcawrwRKhhfOlhevACg0OLLUuYCQUb4"
+            "title": "yrmgfhEwZ/ABDeFF1RhH+uXOUeFW3Lmik+i4ojWf7X4G",
+            "createdAt": "2026-09-05T19:01:59.550Z",
+            "updatedAt": "2026-09-05T19:01:59.550Z",
+            "username": "q/aaCFVTVkL0qEivgfoAL74JVhAPkqsEu7DcKe0L9WHKonKNsxCkmHW4sw==",
+            "domain": "kHtml47W/rN65QvU3jcPh0ZHT6G/HhKveikhh2khRsBjovm8pJBFtQ2Dvw==",
+            "password": "DMcmZI+hvM/SD6OPjjexaFcab1odfeP3BH2v8FyFw5O2lrndVT3Gdip7"
           }
         ],
         "creditcards": [
           {
-            "id": "5214b3312bc606d3",
+            "id": "6f5ffa05c0878483",
             "allowedUsers": [],
-            "title": "2nCrqWc2KWxsIxFd3bRzhzxjsyMtuExkc55ejMFVDf9zqTMN86WFDbk=",
-            "createdAt": "2026-09-05T16:26:30.562Z",
-            "updatedAt": "2026-09-05T16:26:30.562Z",
-            "cardHolderName": "hHxd+RYoSdazmA4wJppx+rPuWraJgR8bOBjkYYmmTJx8UwzXLw==",
-            "cardNumber": "/ejuSVdoVqymy5SOxW66QSHgiG3c1c/vrcEYyDOwACkR+F8iXIOhzA3uJQ0=",
-            "expirationDate": "16uWZ6jnCq+ctQd1IlrLyoOmCOGMs0KlyrWpXIw/3oS/",
-            "cvv": "5DD3lQHzJ6lZ0yLVncdQNpCCM6P8HZ+nnXDYubOrLQ==",
-            "postalCode": "rT5Sf18G7BOkp7SXDvzKeJhhbaL1GAKozxXyq+a0EsS5"
+            "title": "f+dkFohQ4zH5mrg/MEbenV1iVTinvcxoPhpEz+PNO5WKrXztOBRA2rc=",
+            "createdAt": "2026-09-05T19:01:59.551Z",
+            "updatedAt": "2026-09-05T19:01:59.551Z",
+            "cardHolderName": "mGV9K38BO2EpQoek6cmsWIDwbha1fr5fRajvs6rV8cuwQ9JjKQ==",
+            "cardNumber": "R7yJFrSyX/mi+GElMD0rOp/S0ggn6yNeRnOFrIjWAXtv76TXCGkcwjGlv9Q=",
+            "expirationDate": "XbUoN/KErnpcA3xe3WHu85EQo5FlA4RBzKT3xYNa3mLr",
+            "cvv": "rKLkymkGGSosJ8HjOG5k1QM+swMb071UBdWL8bYpGQ==",
+            "postalCode": "XU4ZdOH32ORAujv9SQor4CWajRM/pUV6X0jKj35EleoF"
           }
         ],
         "securenotes": [
           {
-            "id": "934ebab96b1023d3",
+            "id": "95a9c14fe8e80ae4",
             "allowedUsers": [],
-            "title": "RJIJsOMKLtBVc1hAkVOOEooQGssdNW+SDKfCjpPDXliQOSz5JlNTOc2k",
-            "createdAt": "2026-09-05T16:26:30.562Z",
-            "updatedAt": "2026-09-05T16:26:30.562Z",
-            "content": "0nMzu1l/X47pY0/8PJRzwIrcvI5UhRRo/hlaeElbN3jtKbN1rR2G9jgtxsDpB9niQQhfdxvvI0iOwSP9GHhBSIF/tKebZS170XGQ1FaboXQ="
+            "title": "DVV2Dw2pgz0ePNDxlJUGwxJCVyrCYL+A0RLmMW2qelH300XdA2K/0qZl",
+            "createdAt": "2026-09-05T19:01:59.551Z",
+            "updatedAt": "2026-09-05T19:01:59.551Z",
+            "content": "ypdrd+VpiXaEi5m0uKicn5blclztfWHL2DQ8MUH0HNny0j0szijCuwDdiPYxDbA5Xjp9L/nxx0kVd3SyYFb0/GpAl0+fmfuIW30nHTLKDAY="
           }
         ]
       },
       "expected": {
-        "a97336f1a9dfb16c": {
+        "5886f91a3f1f31ac": {
           "title": "Gmail",
           "username": "alice@gmail.com",
           "domain": "mail.google.com",
           "password": "P@ssw0rd-acc-0"
         },
-        "5214b3312bc606d3": {
+        "6f5ffa05c0878483": {
           "title": "Personal Card",
           "cardHolderName": "ALICE DOE",
           "cardNumber": "4111111111111111",
@@ -215,7 +215,7 @@
           "postalCode": "28001",
           "cvv": "123"
         },
-        "934ebab96b1023d3": {
+        "95a9c14fe8e80ae4": {
           "title": "Recovery codes",
           "content": "linea uno\nlinea dos con acentos: ñ á ü\nlinea tres"
         }

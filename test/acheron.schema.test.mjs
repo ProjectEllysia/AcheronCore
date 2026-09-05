@@ -23,8 +23,8 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
-import { STORABLE_SCHEMA, SCHEMA_VERSION } from '../src/schema.js'
-import { STORABLE_FIELDS, STORABLE_CATEGORIES, KIND_BY_CATEGORY } from '../src/storableFields.js'
+import { STORABLE_SCHEMA, SCHEMA_VERSION } from '../dist/src/schema.js'
+import { STORABLE_FIELDS, STORABLE_CATEGORIES, KIND_BY_CATEGORY } from '../dist/src/storableFields.js'
 
 let passed = 0
 let failed = 0

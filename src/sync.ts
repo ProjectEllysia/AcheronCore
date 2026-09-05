@@ -7,8 +7,10 @@
  * del componente, para poder probarla sin montar la vista.
  */
 
+import type { ApiFetch, RevisionContext, VaultWriteResult } from './types.js'
+
 /** Lee el JSON de una respuesta sin consumirla (el llamante aún puede usarla). */
-export async function peekJson(res) {
+export async function peekJson(res: Response | null): Promise<unknown> {
   if (!res) return null
   try {
     return await res.clone().json()
@@ -36,7 +38,12 @@ export async function peekJson(res) {
  *          `refreshed` indica que hubo conflicto y el estado local ya se releyó,
  *          así que el llamante no debe parchearlo a mano.
  */
-export async function vaultWrite(apiFetch, path, options, ctx) {
+export async function vaultWrite(
+  apiFetch: ApiFetch,
+  path: string,
+  options: RequestInit,
+  ctx: RevisionContext,
+): Promise<VaultWriteResult> {
   const send = () => apiFetch(path, {
     ...options,
     headers: {
@@ -48,7 +55,7 @@ export async function vaultWrite(apiFetch, path, options, ctx) {
   let res = await send()
   let body = await peekJson(res)
 
-  if (res && res.status === 409 && body?.error === 'vault_revision_mismatch') {
+  if (res && res.status === 409 && readString(body, 'error') === 'vault_revision_mismatch') {
     if (!(await ctx.refresh())) return { res, refreshed: false }
     res = await send()
     body = await peekJson(res)
@@ -60,8 +67,29 @@ export async function vaultWrite(apiFetch, path, options, ctx) {
   return { res, refreshed: false }
 }
 
-function trackRevision(ctx, res, body) {
-  if (res && res.ok && typeof body?.revision === 'number') {
-    ctx.revision = body.revision
+function trackRevision(ctx: RevisionContext, res: Response | null, body: unknown): void {
+  const revision = readNumber(body, 'revision')
+  if (res && res.ok && revision !== null) {
+    ctx.revision = revision
   }
+}
+
+/* ── Estrechamiento de lo que llega por la red ──────────────────────────── */
+
+// El cuerpo de una respuesta es `unknown` de verdad: lo manda el servidor y
+// puede ser cualquier cosa, incluido `null` o una cadena. Se comprueba en vez
+// de afirmarse, que es justo lo que TypeScript hace útil en una frontera.
+
+/** Devuelve el campo si es un número; `null` en cualquier otro caso. */
+function readNumber(body: unknown, key: string): number | null {
+  if (typeof body !== 'object' || body === null) return null
+  const value = (body as Record<string, unknown>)[key]
+  return typeof value === 'number' ? value : null
+}
+
+/** Devuelve el campo si es una cadena; `null` en cualquier otro caso. */
+function readString(body: unknown, key: string): string | null {
+  if (typeof body !== 'object' || body === null) return null
+  const value = (body as Record<string, unknown>)[key]
+  return typeof value === 'string' ? value : null
 }

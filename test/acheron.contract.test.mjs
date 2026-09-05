@@ -12,8 +12,8 @@
  *   node test/acheron.contract.test.mjs
  */
 
-import { deriveKey, sha256Hex } from '../src/crypto.js'
-import { openVault, createVault, WrongPasswordError } from '../src/vault.js'
+import { deriveKey, sha256Hex } from '../dist/src/crypto.js'
+import { openVault, createVault, WrongPasswordError } from '../dist/src/vault.js'
 
 let passed = 0
 let failed = 0
@@ -64,7 +64,7 @@ console.log('Contratos implícitos del motor\n')
 
   // Las claves se importan como no exportables, asi que se comparan por su
   // efecto: que una descifre lo que cifro la otra.
-  const { aesGcmEncrypt, aesGcmDecrypt } = await import('../src/crypto.js')
+  const { aesGcmEncrypt, aesGcmDecrypt } = await import('../dist/src/crypto.js')
   const sealed = await aesGcmEncrypt(fromText, 'mismo secreto')
   let interchangeable = false
   try {

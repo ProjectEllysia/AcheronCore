@@ -1,20 +1,29 @@
 {
   "name": "@projectellysia/acheron-core-web",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Acheron vault crypto engine for JavaScript - mirror of AcheronCore's wire format",
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
   "exports": {
-    ".": "./index.js",
-    "./sync": "./src/sync.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./sync": {
+      "types": "./dist/src/sync.d.ts",
+      "default": "./dist/src/sync.js"
+    }
   },
   "files": [
-    "index.js",
-    "src"
+    "dist"
   ],
   "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "prepare": "tsc",
+    "pretest": "tsc",
     "test": "node test/acheron.schema.test.mjs && node test/acheron.contract.test.mjs && node test/acheron.interop.test.mjs && node test/acheron.crud.test.mjs && node test/acheron.sync.test.mjs",
-    "vectors": "node test/acheron.vectorgen.mjs"
+    "vectors": "npm run build && node test/acheron.vectorgen.mjs"
   },
   "dependencies": {
     "hash-wasm": "^4.12.0"
@@ -24,5 +33,9 @@
     "url": "git+https://github.com/ProjectEllysia/AcheronCoreWeb.git"
   },
   "license": "UNLICENSED",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "types": "dist/index.d.ts"
 }

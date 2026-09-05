@@ -41,6 +41,7 @@ const lines = [
 for (const type of document.types) {
   lines.push('  {')
   lines.push(`    kind: ${JSON.stringify(type.kind)}, category: ${JSON.stringify(type.category)},`)
+  if (type.matchKey) lines.push(`    matchKey: ${JSON.stringify(type.matchKey)},`)
   lines.push('    fields: [')
   for (const field of type.fields) {
     lines.push(`      { key: ${JSON.stringify(field.key)}${field.secret ? ', secret: true' : ''} },`)

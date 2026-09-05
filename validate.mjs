@@ -86,8 +86,21 @@ for (const type of STORABLE_SCHEMA) {
   check(`${name}: category es un identificador`,
     typeof type.category === 'string' && IDENTIFIER.test(type.category), `= ${type.category}`)
   check(`${name}: no tiene claves de más`,
-    Object.keys(type).every((k) => ['kind', 'category', 'fields'].includes(k)),
+    Object.keys(type).every((k) => ['kind', 'category', 'matchKey', 'fields'].includes(k)),
     `claves: ${Object.keys(type).join(', ')}`)
+
+  // matchKey senala QUE campo se compara con la URL de la pagina para decidir
+  // si una credencial corresponde al sitio que el usuario esta viendo. Un
+  // matchKey que apunte a un campo inexistente no rompe nada al cargar: lo que
+  // hace es que la extension no ofrezca NUNCA esa credencial, en silencio.
+  if ('matchKey' in type) {
+    check(`${name}: matchKey apunta a un campo que existe`,
+      (type.fields ?? []).some((f) => f.key === type.matchKey),
+      `matchKey = ${type.matchKey}`)
+    check(`${name}: matchKey no apunta a un campo secreto`,
+      !(type.fields ?? []).some((f) => f.key === type.matchKey && f.secret),
+      'un campo sensible no puede compararse con una URL en claro')
+  }
   check(`${name}: tiene al menos un campo`,
     Array.isArray(type.fields) && type.fields.length > 0)
 

@@ -56,6 +56,16 @@ tasks.test {
     // interop que consume el cliente web. CI los sube como artefacto.
     systemProperty("vectors.out", vectorsFile.get().asFile.path)
     outputs.file(vectorsFile)
+
+    // Los vectores que produce el cliente web son ENTRADA de la suite: sin
+    // declararlos, Gradle da la tarea por up-to-date y no vuelve a ejecutar
+    // InteropFromJsTest cuando cambian, que es justo cuando hay que ejecutarlo.
+    // Se usa inputs.files (y no inputs.file) para que un fichero ausente no
+    // rompa la configuracion del build: de ese caso ya se queja el test, con
+    // un mensaje que explica como regenerarlo.
+    inputs.files(layout.projectDirectory.file("vectors/acheron-vectors-js.json"))
+        .withPropertyName("interopVectorsFromJs")
+        .optional()
 }
 
 publishing {

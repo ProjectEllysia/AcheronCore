@@ -54,8 +54,15 @@ para el usuario.
 Lo que **no** hay aquí, y no debe haberlo: etiquetas, plurales legibles, pistas de formulario,
 orden de presentación, iconos. Todo eso es de cada cliente. El validador lo impide activamente.
 
+**`schema.js`** es el mismo catálogo como módulo JavaScript, **generado** desde el JSON. Existe
+porque un fichero JSON sólo se puede leer del disco, y el consumidor principal de este paquete —el
+motor criptográfico de la web y de la extensión de navegador— corre donde no hay disco. No se edita
+a mano: se regenera con `npm run generate`, y `npm test` comprueba que no se ha separado del JSON.
+
 **`index.js`** es un lector para consumidores JavaScript, con los índices que todos acaban
 necesitando (por `kind`, por `category`, claves por categoría, campos secretos por categoría).
+Importa de `schema.js`, así que funciona igual en Node y en el navegador.
+
 Python, Kotlin y Java leen el JSON directamente; no necesitan librería.
 
 ## Consumir el esquema

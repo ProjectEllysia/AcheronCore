@@ -12,7 +12,18 @@
  *   node validate.mjs
  */
 
-import { SCHEMA_DOCUMENT, STORABLE_SCHEMA, SCHEMA_VERSION } from './index.js'
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
+
+import { STORABLE_SCHEMA, SCHEMA_VERSION } from './index.js'
+
+// El contrato es el JSON; `schema.js` es su espejo generado, y es lo que
+// importan los consumidores que corren en el navegador. Se lee aqui el JSON
+// crudo para poder comparar los dos.
+const SCHEMA_DOCUMENT = JSON.parse(
+  readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'schema.json'), 'utf8'),
+)
 
 let passed = 0
 let failed = 0
@@ -114,6 +125,21 @@ for (const type of STORABLE_SCHEMA) {
       `encontrado: ${enCampo.join(', ')}`)
   }
 }
+
+/* ── El espejo JS no se ha separado del JSON ── */
+
+// Sin esto, `npm run generate` podria olvidarse tras editar el JSON y los
+// consumidores del navegador seguirian con el catalogo viejo, en silencio.
+check(
+  'schema.js coincide con schema.json',
+  JSON.stringify(STORABLE_SCHEMA) === JSON.stringify(SCHEMA_DOCUMENT.types),
+  'ejecuta `npm run generate`',
+)
+check(
+  'schema.js declara la misma version',
+  SCHEMA_VERSION === SCHEMA_DOCUMENT.schemaVersion,
+  `js=${SCHEMA_VERSION} json=${SCHEMA_DOCUMENT.schemaVersion}`,
+)
 
 console.log(`\nResultado: ${passed} OK, ${failed} fallidos`)
 if (failed > 0) process.exit(1)

@@ -89,27 +89,61 @@ export function generateSaltB64(length = 16) {
  */
 export async function deriveKey(masterPassword, algorithm) {
   const saltBytes = b64decode(algorithm.salt)
-  // La API exporta los parámetros KDF como STRING; normalizamos con parseInt.
-  const iterations = parseInt(algorithm.kdfIterations, 10) || 0
   const kdf = String(algorithm.kdf || '').toUpperCase()
 
   let rawKey // Uint8Array de 32 bytes
   if (kdf === 'PBKDF2') {
-    rawKey = await deriveKeyPbkdf2(masterPassword, saltBytes, iterations || 600000)
+    rawKey = await deriveKeyPbkdf2(
+      masterPassword, saltBytes, kdfParameter(algorithm, 'kdfIterations', 600000),
+    )
   } else {
     // Argon2id v1.3 con los mismos defaults que AcheronCore.
     rawKey = await argon2id({
       password: utf8(masterPassword),
       salt: saltBytes,
-      iterations: iterations || 3,
-      memorySize: parseInt(algorithm.kdfMemoryKiB, 10) || 65536, // KiB
-      parallelism: parseInt(algorithm.kdfParallelism, 10) || 1,
+      iterations: kdfParameter(algorithm, 'kdfIterations', 3),
+      memorySize: kdfParameter(algorithm, 'kdfMemoryKiB', 65536), // KiB
+      parallelism: kdfParameter(algorithm, 'kdfParallelism', 1),
       hashLength: 32,
       outputType: 'binary',
     })
   }
 
   return subtle.importKey('raw', rawKey, 'AES-GCM', false, ['encrypt', 'decrypt'])
+}
+
+/**
+ * Lee un parámetro del KDF del bloque `algorithm`, exigiendo que sea un entero
+ * positivo si viene, y usando el default documentado solo si NO viene.
+ *
+ * La distinción es la que importa. Un vault antiguo puede no traer el campo, y
+ * ahí el default es correcto. Pero un campo presente y corrupto significa que
+ * no sabemos con qué parámetros se cifró ese vault, y caer al default en ese
+ * caso deriva una clave DISTINTA de la real: el vault no abre y al usuario se
+ * le dice que su contraseña maestra es incorrecta, que es mentira y le lleva a
+ * intentar recuperarla en vez de a mirar sus datos.
+ *
+ * Fallar aquí, ruidosamente, convierte ese callejón sin salida en un error que
+ * apunta al sitio.
+ *
+ * Nótese que la API exporta estos parámetros como STRING, no como número; el
+ * motor Java los emite como número. Ambas formas se aceptan a propósito.
+ *
+ * @throws {Error} si el campo viene y no es un entero positivo
+ */
+function kdfParameter(algorithm, key, fallback) {
+  const raw = algorithm?.[key]
+  if (raw === undefined || raw === null || raw === '') return fallback
+
+  const value = Number(raw)
+  if (!Number.isInteger(value) || value <= 0) {
+    throw new Error(
+      `El vault declara ${key} = ${JSON.stringify(raw)}, que no es un entero positivo. ` +
+        'El bloque `algorithm` está corrupto: derivar con el valor por defecto daría ' +
+        'una clave distinta y el vault parecería tener otra contraseña.',
+    )
+  }
+  return value
 }
 
 async function deriveKeyPbkdf2(masterPassword, saltBytes, iterations) {

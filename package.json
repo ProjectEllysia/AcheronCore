@@ -8,9 +8,12 @@
     ".": "./index.js",
     "./sync": "./src/sync.js"
   },
-  "files": ["index.js", "src"],
+  "files": [
+    "index.js",
+    "src"
+  ],
   "scripts": {
-    "test": "node test/acheron.interop.test.mjs && node test/acheron.crud.test.mjs && node test/acheron.sync.test.mjs && node test/acheron.schema.test.mjs",
+    "test": "node test/acheron.schema.test.mjs && node test/acheron.contract.test.mjs && node test/acheron.interop.test.mjs && node test/acheron.crud.test.mjs && node test/acheron.sync.test.mjs",
     "vectors": "node test/acheron.vectorgen.mjs"
   },
   "dependencies": {

@@ -16,23 +16,24 @@ const SYMBOLS = '!@#$%^&*()-_=+[]{};:,.<>?'
 const AMBIGUOUS = new Set('0O1lI')
 
 /** Entero uniforme en [0, max) usando bytes criptográficos (rechazo de sesgo por módulo). */
-function secureInt(max) {
+function secureInt(max: number): number {
   const limit = 256 - (256 % max)
-  let byte
+  let byte: number
   do {
-    byte = randomBytes(1)[0]
+    // randomBytes(1) siempre trae un byte; el indexado lo tipa como opcional.
+    byte = randomBytes(1)[0] as number
   } while (byte >= limit)
   return byte % max
 }
 
-function secureChoice(str) {
-  return str[secureInt(str.length)]
+function secureChoice(str: string): string {
+  return str[secureInt(str.length)] as string
 }
 
-function secureShuffle(arr) {
+function secureShuffle<T>(arr: T[]): T[] {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = secureInt(i + 1)
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    ;[arr[i], arr[j]] = [arr[j] as T, arr[i] as T]
   }
   return arr
 }
@@ -57,9 +58,12 @@ export function generatePassword({
   symbols = true,
   excludeAmbiguous = true,
 } = {}) {
-  let pools = [uppercase && UPPER, lowercase && LOWER, digits && DIGITS, symbols && SYMBOLS].filter(
-    Boolean,
-  )
+  let pools: string[] = [
+    uppercase && UPPER,
+    lowercase && LOWER,
+    digits && DIGITS,
+    symbols && SYMBOLS,
+  ].filter((pool): pool is string => typeof pool === 'string')
   if (excludeAmbiguous) {
     pools = pools.map((pool) => [...pool].filter((c) => !AMBIGUOUS.has(c)).join(''))
   }

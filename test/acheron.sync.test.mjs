@@ -9,7 +9,7 @@
  *   node web/app/test/acheron.sync.test.mjs
  */
 
-import { vaultWrite } from '../src/sync.js'
+import { vaultWrite } from '../dist/src/sync.js'
 
 let passed = 0
 let failed = 0

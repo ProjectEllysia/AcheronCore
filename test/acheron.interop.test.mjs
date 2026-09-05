@@ -17,8 +17,8 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
-import { openVault, WrongPasswordError } from '../src/vault.js'
-import { STORABLE_CATEGORIES } from '../src/storableFields.js'
+import { openVault, WrongPasswordError } from '../dist/src/vault.js'
+import { STORABLE_CATEGORIES } from '../dist/src/storableFields.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const vectorsPath = resolve(here, 'acheron-vectors.json')

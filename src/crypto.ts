@@ -19,10 +19,15 @@
 
 import { argon2id } from 'hash-wasm'
 
+import type { AlgorithmBlock, KdfParameter } from './types.js'
+
 const IV_LENGTH = 12 // bytes
 const TAG_LENGTH = 128 // bits
 
 const subtle = globalThis.crypto.subtle
+
+/** Los parámetros numéricos que un bloque `algorithm` puede declarar. */
+type KdfParameterName = 'kdfIterations' | 'kdfMemoryKiB' | 'kdfParallelism' | 'kdfKeyLength'
 
 /* ── helpers de codificación ─────────────────────────────────────────── */
 
@@ -30,26 +35,26 @@ const textEncoder = new TextEncoder()
 const textDecoder = new TextDecoder()
 
 /** UTF-8: string → Uint8Array */
-export function utf8(str) {
+export function utf8(str: string): Uint8Array<ArrayBuffer> {
   return textEncoder.encode(str)
 }
 
 /** UTF-8: Uint8Array → string */
-export function fromUtf8(bytes) {
+export function fromUtf8(bytes: Uint8Array): string {
   return textDecoder.decode(bytes)
 }
 
 /** Uint8Array → string Base64 (estándar, mismo alfabeto que java.util.Base64). */
-export function b64encode(bytes) {
+export function b64encode(bytes: Uint8Array): string {
   let binary = ''
-  for (let i = 0; i < bytes.length; i++) {
-    binary += String.fromCharCode(bytes[i])
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte)
   }
   return btoa(binary)
 }
 
 /** string Base64 → Uint8Array */
-export function b64decode(b64) {
+export function b64decode(b64: string): Uint8Array<ArrayBuffer> {
   const binary = atob(b64)
   const out = new Uint8Array(binary.length)
   for (let i = 0; i < binary.length; i++) {
@@ -59,7 +64,7 @@ export function b64decode(b64) {
 }
 
 /** n bytes criptográficamente aleatorios. */
-export function randomBytes(n) {
+export function randomBytes(n: number): Uint8Array<ArrayBuffer> {
   return globalThis.crypto.getRandomValues(new Uint8Array(n))
 }
 
@@ -70,7 +75,7 @@ export function randomBytes(n) {
  * @param {number} length  longitud en bytes (mínimo 16 recomendado)
  * @returns {string} salt Base64
  */
-export function generateSaltB64(length = 16) {
+export function generateSaltB64(length = 16): string {
   return b64encode(randomBytes(length))
 }
 
@@ -87,18 +92,21 @@ export function generateSaltB64(length = 16) {
  * @param {object} algorithm  bloque `algorithm` del vault JSON
  * @returns {Promise<CryptoKey>}
  */
-export async function deriveKey(masterPassword, algorithm) {
+export async function deriveKey(masterPassword: string, algorithm: AlgorithmBlock): Promise<CryptoKey> {
   const saltBytes = b64decode(algorithm.salt)
   const kdf = String(algorithm.kdf || '').toUpperCase()
 
-  let rawKey // Uint8Array de 32 bytes
+  let rawKey: Uint8Array<ArrayBuffer> // 32 bytes
   if (kdf === 'PBKDF2') {
     rawKey = await deriveKeyPbkdf2(
       masterPassword, saltBytes, kdfParameter(algorithm, 'kdfIterations', 600000),
     )
   } else {
     // Argon2id v1.3 con los mismos defaults que AcheronCore.
-    rawKey = await argon2id({
+    // hash-wasm declara su salida como Uint8Array<ArrayBufferLike>; con
+    // outputType 'binary' siempre respalda en un ArrayBuffer normal, que es lo
+    // que Web Crypto exige.
+    rawKey = (await argon2id({
       password: utf8(masterPassword),
       salt: saltBytes,
       iterations: kdfParameter(algorithm, 'kdfIterations', 3),
@@ -106,7 +114,7 @@ export async function deriveKey(masterPassword, algorithm) {
       parallelism: kdfParameter(algorithm, 'kdfParallelism', 1),
       hashLength: 32,
       outputType: 'binary',
-    })
+    })) as Uint8Array<ArrayBuffer>
   }
 
   return subtle.importKey('raw', rawKey, 'AES-GCM', false, ['encrypt', 'decrypt'])
@@ -131,7 +139,7 @@ export async function deriveKey(masterPassword, algorithm) {
  *
  * @throws {Error} si el campo viene y no es un entero positivo
  */
-function kdfParameter(algorithm, key, fallback) {
+function kdfParameter(algorithm: AlgorithmBlock, key: KdfParameterName, fallback: number): number {
   const raw = algorithm?.[key]
   if (raw === undefined || raw === null || raw === '') return fallback
 
@@ -146,7 +154,11 @@ function kdfParameter(algorithm, key, fallback) {
   return value
 }
 
-async function deriveKeyPbkdf2(masterPassword, saltBytes, iterations) {
+async function deriveKeyPbkdf2(
+  masterPassword: string,
+  saltBytes: Uint8Array<ArrayBuffer>,
+  iterations: number,
+): Promise<Uint8Array<ArrayBuffer>> {
   const baseKey = await subtle.importKey('raw', utf8(masterPassword), 'PBKDF2', false, [
     'deriveBits',
   ])
@@ -168,7 +180,7 @@ async function deriveKeyPbkdf2(masterPassword, saltBytes, iterations) {
  * @param {string} plainText
  * @returns {Promise<string>}
  */
-export async function aesGcmEncrypt(key, plainText) {
+export async function aesGcmEncrypt(key: CryptoKey, plainText: string): Promise<string> {
   const iv = randomBytes(IV_LENGTH)
   const ct = new Uint8Array(
     await subtle.encrypt({ name: 'AES-GCM', iv, tagLength: TAG_LENGTH }, key, utf8(plainText)),
@@ -187,7 +199,7 @@ export async function aesGcmEncrypt(key, plainText) {
  * @returns {Promise<string>}
  * @throws si el tag no valida (clave/IV incorrectos)
  */
-export async function aesGcmDecrypt(key, ivAndCiphertextB64) {
+export async function aesGcmDecrypt(key: CryptoKey, ivAndCiphertextB64: string): Promise<string> {
   const buf = b64decode(ivAndCiphertextB64)
   const iv = buf.slice(0, IV_LENGTH)
   const ct = buf.slice(IV_LENGTH)
@@ -206,7 +218,7 @@ export async function aesGcmDecrypt(key, ivAndCiphertextB64) {
  * @param {string} vaultKeyB64  campo `vaultKey` del vault JSON
  * @returns {Promise<CryptoKey>}
  */
-export async function importVaultKey(derivedKey, vaultKeyB64) {
+export async function importVaultKey(derivedKey: CryptoKey, vaultKeyB64: string): Promise<CryptoKey> {
   const rawKeyB64 = await aesGcmDecrypt(derivedKey, vaultKeyB64)
   const rawKey = b64decode(rawKeyB64)
   return subtle.importKey('raw', rawKey, 'AES-GCM', false, ['encrypt', 'decrypt'])
@@ -215,11 +227,11 @@ export async function importVaultKey(derivedKey, vaultKeyB64) {
 /* ── checker (validación del master password) ────────────────────────── */
 
 /** hex(SHA-256(str)). Espejo del hash que produce AcheronCore para el checker. */
-export async function sha256Hex(str) {
+export async function sha256Hex(str: string): Promise<string> {
   const digest = new Uint8Array(await subtle.digest('SHA-256', utf8(str)))
   let hex = ''
-  for (let i = 0; i < digest.length; i++) {
-    hex += digest[i].toString(16).padStart(2, '0')
+  for (const byte of digest) {
+    hex += byte.toString(16).padStart(2, '0')
   }
   return hex
 }
@@ -233,7 +245,11 @@ export async function sha256Hex(str) {
  * @param {string} username validator (username del usuario logueado)
  * @returns {Promise<boolean>}
  */
-export async function validateChecker(derivedKey, checker, username) {
+export async function validateChecker(
+  derivedKey: CryptoKey,
+  checker: string,
+  username: string,
+): Promise<boolean> {
   let decrypted
   try {
     decrypted = await aesGcmDecrypt(derivedKey, checker)

@@ -9,7 +9,10 @@ const COMMON_WEAK = [
   'admin', 'welcome', 'abc123', 'iloveyou', 'monkey', 'dragon',
 ]
 
-const LEVELS = [
+import type { PasswordStrength } from './types.js'
+
+/** Los cinco escalones del veredicto, del peor al mejor. */
+const LEVELS: ReadonlyArray<Pick<PasswordStrength, 'label' | 'color'>> = [
   { label: 'Muy débil', color: '#d96c6c' },
   { label: 'Débil', color: '#e08a4f' },
   { label: 'Regular', color: '#e0c34f' },
@@ -17,13 +20,9 @@ const LEVELS = [
   { label: 'Muy fuerte', color: '#5fbf7a' },
 ]
 
-/**
- * @param {string} password
- * @returns {{ score: number, label: string, color: string, percent: number }}
- *   score de 0 (muy débil) a 4 (muy fuerte)
- */
-export function scorePassword(password) {
-  if (!password) return { score: 0, percent: 0, ...LEVELS[0] }
+/** Puntúa una contraseña de 0 (muy débil) a 4 (muy fuerte). */
+export function scorePassword(password: string): PasswordStrength {
+  if (!password) return { score: 0, percent: 0, ...(LEVELS[0] as Pick<PasswordStrength, 'label' | 'color'>) }
 
   let points = 0
   const len = password.length
@@ -47,5 +46,9 @@ export function scorePassword(password) {
   if (len < 8) points -= 2
 
   const score = Math.min(4, Math.max(0, Math.floor(points / 2)))
-  return { score, percent: ((score + 1) / 5) * 100, ...LEVELS[score] }
+  return {
+    score,
+    percent: ((score + 1) / 5) * 100,
+    ...(LEVELS[score] as Pick<PasswordStrength, 'label' | 'color'>),
+  }
 }

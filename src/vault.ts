@@ -22,6 +22,13 @@ import {
   b64encode,
 } from './crypto.js'
 import { STORABLE_FIELDS, STORABLE_CATEGORIES, KIND_BY_CATEGORY } from './storableFields.js'
+import type {
+  VaultJson,
+  VaultSecrets,
+  EncryptedStorable,
+  PlainStorable,
+  StorablePayload,
+} from './types.js'
 
 /** Se lanza cuando el master password no valida contra el checker del vault. */
 export class WrongPasswordError extends Error {
@@ -40,7 +47,11 @@ export class WrongPasswordError extends Error {
  * @returns {Promise<OpenVault>}
  * @throws {WrongPasswordError} si el master password es incorrecto
  */
-export async function openVault(vaultJson, masterPassword, username) {
+export async function openVault(
+  vaultJson: VaultJson,
+  masterPassword: string,
+  username: string,
+): Promise<OpenVault> {
   const derivedKey = await deriveKey(masterPassword, vaultJson.algorithm)
 
   if (!(await validateChecker(derivedKey, vaultJson.checker, username))) {
@@ -60,7 +71,7 @@ export async function openVault(vaultJson, masterPassword, username) {
  * @param {string} username  validator del checker (username del usuario)
  * @returns {Promise<{ checker: string, vaultKey: string, algorithm: object }>}
  */
-export async function createVault(masterPassword, username) {
+export async function createVault(masterPassword: string, username: string): Promise<VaultSecrets> {
   const rawVaultKey = randomBytes(32)
   const algorithm = {
     transformation: 'AES/GCM/NoPadding',
@@ -80,7 +91,16 @@ export async function createVault(masterPassword, username) {
  * Vault abierto: conserva la vaultKey en memoria y opera sobre los storables.
  */
 export class OpenVault {
-  constructor(vaultJson, vaultKey) {
+  /** El vault JSON tal cual llegó, con los storables aún cifrados. */
+  readonly raw: VaultJson
+
+  /**
+   * La clave AES de la bóveda, ya desenvuelta. Se importa como NO extraíble:
+   * ni este código ni nadie puede volver a sacar sus bytes de la CryptoKey.
+   */
+  readonly vaultKey: CryptoKey
+
+  constructor(vaultJson: VaultJson, vaultKey: CryptoKey) {
     this.raw = vaultJson
     this.vaultKey = vaultKey
   }
@@ -93,8 +113,8 @@ export class OpenVault {
    * @param {object} item      storable cifrado del vault JSON
    * @returns {Promise<object>}
    */
-  async decryptStorable(category, item) {
-    return transformStorable(this.vaultKey, category, item, aesGcmDecrypt)
+  async decryptStorable(category: string, item: EncryptedStorable): Promise<PlainStorable> {
+    return transformStorable(this.vaultKey, category, item, aesGcmDecrypt) as Promise<PlainStorable>
   }
 
   /**
@@ -104,18 +124,18 @@ export class OpenVault {
    * @param {object} item  storable en claro
    * @returns {Promise<object>}
    */
-  async encryptStorable(category, item) {
-    return transformStorable(this.vaultKey, category, item, aesGcmEncrypt)
+  async encryptStorable(category: string, item: PlainStorable): Promise<EncryptedStorable> {
+    return transformStorable(this.vaultKey, category, item, aesGcmEncrypt) as Promise<EncryptedStorable>
   }
 
   /**
    * Descifra todos los storables del vault, agrupados por categoría.
    * @returns {Promise<Record<string, object[]>>}
    */
-  async decryptAll() {
-    const out = {}
+  async decryptAll(): Promise<Record<string, PlainStorable[]>> {
+    const out: Record<string, PlainStorable[]> = {}
     for (const category of STORABLE_CATEGORIES) {
-      const items = this.raw[category] || []
+      const items = (this.raw[category] as EncryptedStorable[] | undefined) ?? []
       out[category] = await Promise.all(items.map((it) => this.decryptStorable(category, it)))
     }
     return out
@@ -132,20 +152,30 @@ export class OpenVault {
    * @param {Record<string,string>} plainFields  campos sensibles en claro
    * @returns {Promise<{ payload: object, item: object }>}
    */
-  async createStorable(category, title, plainFields) {
+  async createStorable(
+    category: string,
+    title: string,
+    plainFields: Record<string, string>,
+  ): Promise<{ payload: StorablePayload; item: PlainStorable }> {
+    const kind = KIND_BY_CATEGORY[category]
+    const fields = STORABLE_FIELDS[category]
+    if (!kind || !fields) {
+      throw new Error(`Categoría de storable desconocida: ${category}`)
+    }
+
     const now = new Date().toISOString()
-    const plainItem = { title, createdAt: now, updatedAt: now, ...plainFields }
+    const plainItem: PlainStorable = { title, createdAt: now, updatedAt: now, ...plainFields }
     const encrypted = await this.encryptStorable(category, plainItem)
     const internalId = await generateInternalId(category, encrypted)
 
-    const payload = {
-      kind: KIND_BY_CATEGORY[category],
+    const payload: StorablePayload = {
+      kind,
       internalId,
       title: encrypted.title,
       createdAt: now,
       updatedAt: now,
     }
-    for (const field of STORABLE_FIELDS[category]) {
+    for (const field of fields) {
       payload[field] = encrypted[field]
     }
 
@@ -168,9 +198,14 @@ export class OpenVault {
    * @param {Record<string,string>} newFields
    * @returns {Promise<{ changes: object, item: object }>}
    */
-  async buildUpdateChanges(category, item, newTitle, newFields) {
-    const changes = {}
-    const updated = { ...item }
+  async buildUpdateChanges(
+    category: string,
+    item: PlainStorable,
+    newTitle: string,
+    newFields: Record<string, string>,
+  ): Promise<{ changes: Record<string, string>; item: PlainStorable }> {
+    const changes: Record<string, string> = {}
+    const updated: PlainStorable = { ...item }
 
     if (newTitle != null && newTitle !== item.title) {
       changes.title = await aesGcmEncrypt(this.vaultKey, newTitle)
@@ -207,7 +242,11 @@ export class OpenVault {
    * @returns {Promise<{ checker: string, vaultKey: string, algorithm: object }>}
    * @throws {WrongPasswordError} si la contraseña actual es incorrecta
    */
-  async changePassword(oldPassword, newPassword, username) {
+  async changePassword(
+    oldPassword: string,
+    newPassword: string,
+    username: string,
+  ): Promise<VaultSecrets> {
     const oldDerived = await deriveKey(oldPassword, this.raw.algorithm)
     if (!(await validateChecker(oldDerived, this.raw.checker, username))) {
       throw new WrongPasswordError()
@@ -232,8 +271,9 @@ export class OpenVault {
  * igual que `VaultObject.generateIdFromContent`. El IV aleatorio de AES-GCM
  * hace que el id sea único por alta.
  */
-async function generateInternalId(category, encrypted) {
-  const parts = ['title', ...STORABLE_FIELDS[category]].map((f) => encrypted[f] ?? '')
+async function generateInternalId(category: string, encrypted: EncryptedStorable): Promise<string> {
+  const fields = STORABLE_FIELDS[category] ?? []
+  const parts = ['title', ...fields].map((f) => String(encrypted[f] ?? ''))
   const hex = await sha256Hex(parts.join('|'))
   return hex.slice(0, 16)
 }
@@ -242,17 +282,23 @@ async function generateInternalId(category, encrypted) {
  * Aplica `op` (cifrar o descifrar) a `title` y a los campos sensibles de la
  * categoría, dejando intactos los metadatos (id, createdAt, updatedAt, ...).
  */
-async function transformStorable(vaultKey, category, item, op) {
+async function transformStorable(
+  vaultKey: CryptoKey,
+  category: string,
+  item: Record<string, unknown>,
+  op: (key: CryptoKey, value: string) => Promise<string>,
+): Promise<Record<string, unknown>> {
   const fields = STORABLE_FIELDS[category]
   if (!fields) {
     throw new Error(`Categoría de storable desconocida: ${category}`)
   }
 
-  const result = { ...item }
+  const result: Record<string, unknown> = { ...item }
   const targets = item.title != null ? ['title', ...fields] : fields
   for (const field of targets) {
-    if (item[field] != null) {
-      result[field] = await op(vaultKey, item[field])
+    const value = item[field]
+    if (value != null) {
+      result[field] = await op(vaultKey, String(value))
     }
   }
   return result

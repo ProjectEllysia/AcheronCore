@@ -56,6 +56,13 @@ tasks.test {
     // interop que consume el cliente web. CI los sube como artefacto.
     systemProperty("vectors.out", vectorsFile.get().asFile.path)
     outputs.file(vectorsFile)
+
+    // La copia del catalogo compartido es ENTRADA de la suite: sin declararla,
+    // Gradle da la tarea por up-to-date y no vuelve a ejecutar el test de
+    // contrato cuando cambia, que es justo cuando hay que ejecutarlo.
+    inputs.files(layout.projectDirectory.file("vectors/acheron-schema.json"))
+        .withPropertyName("storableSchemaContract")
+        .optional()
 }
 
 publishing {

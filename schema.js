@@ -2,12 +2,12 @@
  * El catálogo como MÓDULO JavaScript, generado desde `schema.json`.
  *
  * `schema.json` es el contrato y la fuente de verdad, pero un fichero JSON
- * solo se puede leer del disco, y el consumidor principal de este paquete es
+ * sólo se puede leer del disco, y el consumidor principal de este paquete es
  * un motor criptográfico que corre en el NAVEGADOR, donde no hay disco. De ahí
  * este espejo: un módulo que cualquier navegador, empaquetador o runtime puede
  * importar sin tocar el sistema de ficheros.
  *
- * NO SE EDITA A MANO. Se regenera con `npm run generate` y `npm test`
+ * NO SE EDITA A MANO. Se regenera con `npm run generate`, y `npm test`
  * comprueba que no se ha separado del JSON.
  */
 export const SCHEMA_VERSION = 1

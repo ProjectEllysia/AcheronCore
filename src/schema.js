@@ -15,6 +15,7 @@ export const SCHEMA_VERSION = 1
 export const STORABLE_SCHEMA = [
   {
     kind: "account", category: "accounts",
+    matchKey: "domain",
     fields: [
       { key: "username" },
       { key: "domain" },

@@ -53,7 +53,7 @@ anotando aquí cuál:
 
 | | |
 |---|---|
-| **Copiado de** | `AcheronSchema` @ [`v1.1.0`](https://github.com/ProjectEllysia/AcheronSchema/releases/tag/v1.1.0) |
+| **Copiado de** | `AcheronSchema` @ [`v1.2.0`](https://github.com/ProjectEllysia/AcheronSchema/releases/tag/v1.2.0) |
 
 Al añadir un tipo o un campo, el orden es: primero `AcheronSchema`, después esta copia y el
 catalogo de este paquete. Al revés, la suite falla — que es justo lo que debe hacer.

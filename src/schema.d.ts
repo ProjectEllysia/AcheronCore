@@ -14,6 +14,15 @@ export interface SchemaField {
 export interface SchemaType {
   kind: string
   category: string
+  /**
+   * Qué campo se compara con la URL de la página para decidir si una
+   * credencial corresponde al sitio que el usuario está viendo.
+   *
+   * Solo lo tienen los tipos asociables a una web —hoy únicamente `account`—.
+   * La regla de comparación es host exacto, sin subdominios y solo sobre
+   * `https`; está razonada en el README de AcheronSchema.
+   */
+  matchKey?: string
   fields: SchemaField[]
 }
 

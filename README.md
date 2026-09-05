@@ -51,6 +51,9 @@ para el usuario.
   la interfaz los enmascara, y la extensión de navegador necesita saber cuál es el campo de
   contraseña para autocompletarlo sin mostrarlo en claro.
 
+- **`matchKey`** — opcional; sólo lo tienen los tipos que se pueden asociar a una página web.
+  Ver más abajo.
+
 Lo que **no** hay aquí, y no debe haberlo: etiquetas, plurales legibles, pistas de formulario,
 orden de presentación, iconos. Todo eso es de cada cliente. El validador lo impide activamente.
 
@@ -64,6 +67,50 @@ necesitando (por `kind`, por `category`, claves por categoría, campos secretos 
 Importa de `schema.js`, así que funciona igual en Node y en el navegador.
 
 Python, Kotlin y Java leen el JSON directamente; no necesitan librería.
+
+## `matchKey`: qué campo se compara con la URL
+
+Para autocompletar, la extensión de navegador tiene que decidir **qué credencial corresponde a la
+página que el usuario está viendo**. Eso significa comparar la URL contra algún campo del storable,
+y el esquema es quien dice cuál:
+
+```json
+{ "kind": "account", "category": "accounts", "matchKey": "domain", ... }
+```
+
+Sólo `account` lo tiene. Los demás tipos no se asocian a un sitio web: una tarjeta o una nota
+segura no «pertenecen» a un dominio, y darles uno invitaría a ofrecerlas donde no toca.
+
+Vive aquí y no en la extensión a propósito. Si la extensión llevara escrito que «el campo se llama
+`domain`», sería un cliente con conocimiento propio del catálogo que nadie verifica — exactamente
+el problema que este repositorio existe para eliminar.
+
+El validador comprueba dos cosas sobre él. Que **apunte a un campo que existe**: un `matchKey`
+colgando no rompe nada al cargar, hace que la extensión no ofrezca *nunca* esa credencial, en
+silencio. Y que **no apunte a un campo secreto**: comparar un valor sensible contra una URL es
+sacarlo de su sitio.
+
+### La regla de comparación
+
+El esquema dice *qué* campo se compara. *Cómo* se compara es una decisión de seguridad, y la
+decisión tomada es la conservadora:
+
+> **Coincidencia exacta de host**, sin subdominios, y sólo sobre `https`.
+
+Una credencial guardada para `mail.google.com` se ofrece en `mail.google.com` y en ningún otro
+sitio.
+
+El motivo es la asimetría del error. Ser demasiado estricto molesta: el usuario no ve su credencial
+ofrecida y la busca a mano. Ser demasiado laxo **entrega credenciales a quien no debe**, y eso no
+tiene deshacer. Las reglas más cómodas —coincidencia por dominio registrable, o por sufijo— exigen
+la *Public Suffix List* para no tratar `github.io` o `blogspot.com` como un solo sitio; sin ella, un
+usuario cualquiera de esos dominios recibiría las credenciales de todos los demás.
+
+Ampliar la regla más adelante es fácil y compatible: una credencial que hoy se ofrece seguirá
+ofreciéndose. Estrecharla no lo es — deja de ofrecer credenciales donde el usuario ya se había
+acostumbrado a verlas. Por eso se empieza estrecho.
+
+`https` no es negociable: autocompletar sobre `http` entrega la contraseña a la red.
 
 ## Consumir el esquema
 

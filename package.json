@@ -33,9 +33,11 @@
     "url": "git+https://github.com/ProjectEllysia/AcheronCoreWeb.git"
   },
   "license": "UNLICENSED",
-  "private": true,
   "devDependencies": {
     "typescript": "^5.9.3"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

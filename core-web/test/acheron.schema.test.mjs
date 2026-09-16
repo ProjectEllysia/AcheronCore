@@ -1,20 +1,15 @@
 /**
- * La copia del catálogo que lleva este paquete no diverge de `AcheronSchema`.
+ * El catálogo que publica este paquete sigue a `schema/schema.json`.
  *
  * El motor necesita saber qué campos tiene cada tipo de storable, porque son
- * los que cifra uno a uno. Ese catálogo es un contrato compartido con la API,
- * la app Android y `AcheronCore`, y vive en
- * [AcheronSchema](https://github.com/ProjectEllysia/AcheronSchema).
+ * los que cifra uno a uno. Ese catálogo es un contrato compartido con el motor
+ * Java, la API y la app Android, y su fuente de verdad es `schema/schema.json`,
+ * en la raíz de este repositorio.
  *
- * Aquí se lleva **una copia**, `src/schema.js`, y no una dependencia npm, por
- * una razón temporal: los repositorios de la organización son privados, así
- * que instalar desde otro repositorio exige credenciales que la CI todavía no
- * tiene. Ese paso —convertirlo en dependencia con versión fijada— es la issue
- * de publicación en GitHub Packages.
- *
- * Mientras tanto, una copia sin verificar sería un quinto sitio donde el
- * catálogo puede divergir. Este test la ata al contrato, igual que hacen los
- * otros tres clientes con la suya.
+ * `src/schema.js` no es una copia sino el espejo que genera
+ * `schema/generate.mjs`: el paquete corre en el navegador, donde no hay disco
+ * del que leer el JSON. Este test comprueba que ese espejo y los índices que
+ * el motor deriva de él dicen lo mismo que el contrato.
  *
  *   node test/acheron.schema.test.mjs
  */
@@ -40,9 +35,9 @@ function check(name, condition, detail = '') {
 }
 
 const here = dirname(fileURLToPath(import.meta.url))
-const shared = JSON.parse(readFileSync(resolve(here, 'acheron-schema.json'), 'utf8'))
+const shared = JSON.parse(readFileSync(resolve(here, '../../schema/schema.json'), 'utf8'))
 
-console.log('Catálogo: la copia local contra AcheronSchema\n')
+console.log('Catálogo: el motor contra schema/schema.json\n')
 
 check(
   'la versión del contrato coincide',
@@ -60,7 +55,7 @@ const simplify = (types) =>
 check(
   'el catálogo local coincide con el contrato',
   JSON.stringify(simplify(STORABLE_SCHEMA)) === JSON.stringify(simplify(shared.types)),
-  'la copia se ha separado de AcheronSchema',
+  'ejecuta `npm run generate` en schema/',
 )
 
 /* ── Los índices que consume el motor se derivan del catálogo ── */

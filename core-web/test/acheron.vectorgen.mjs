@@ -12,9 +12,10 @@
  * No es un test: es un generador. Se ejecuta a propósito cuando cambia el
  * formato de cable, y su salida se commitea.
  *
- *   node web/app/test/acheron.vectorgen.mjs [ruta-de-salida]
+ *   npm run vectors   (o node test/acheron.vectorgen.mjs [ruta-de-salida])
  *
- * Salida por defecto: acheron-vectors-js.json, en este mismo directorio.
+ * Salida por defecto: `vectors/acheron-vectors-js.json`, en la raíz del
+ * repositorio, que es de donde lo lee `InteropFromJsTest`.
  *
  * SOBRE EL DETERMINISMO: la salida cambia en cada ejecución aunque no cambie
  * nada del código. AES-GCM usa un IV aleatorio por operación y cada bóveda
@@ -139,7 +140,7 @@ async function main() {
   }
 
   const here = dirname(fileURLToPath(import.meta.url))
-  const out = process.argv[2] || resolve(here, 'acheron-vectors-js.json')
+  const out = process.argv[2] || resolve(here, '../../vectors/acheron-vectors-js.json')
   writeFileSync(out, JSON.stringify({ cases }, null, 2) + '\n', 'utf8')
 
   console.log(`Vectores escritos en ${out}`)

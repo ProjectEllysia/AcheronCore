@@ -1,7 +1,7 @@
 /**
- * Declaración de `schema.js`, que se queda en JavaScript a propósito: es una
- * copia literal de un fichero generado en `AcheronSchema`, y convertirlo a
- * TypeScript rompería esa propiedad — dejaría de poder recopiarse sin más.
+ * Declaración de `schema.js`, que se queda en JavaScript a propósito: lo
+ * escribe `schema/generate.mjs` a partir de `schema/schema.json`, y así el
+ * generador no necesita saber nada de tipos.
  */
 
 /** Un campo de un storable; `secret` marca los sensibles. */
@@ -20,7 +20,7 @@ export interface SchemaType {
    *
    * Solo lo tienen los tipos asociables a una web —hoy únicamente `account`—.
    * La regla de comparación es host exacto, sin subdominios y solo sobre
-   * `https`; está razonada en el README de AcheronSchema.
+   * `https`; está razonada en `schema/README.md`.
    */
   matchKey?: string
   fields: SchemaField[]

@@ -1,26 +1,10 @@
 {
   "name": "@projectellysia/acheron-schema",
-  "version": "1.2.0",
-  "description": "Acheron storable catalogue - language-neutral data contract",
+  "description": "Acheron storable catalogue - language-neutral data contract for both engines",
   "type": "module",
-  "main": "index.js",
-  "exports": {
-    ".": "./index.js",
-    "./schema.js": "./schema.js",
-    "./schema.json": "./schema.json"
-  },
-  "files": [
-    "index.js",
-    "schema.js",
-    "schema.json"
-  ],
   "scripts": {
     "generate": "node generate.mjs",
     "test": "node validate.mjs"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ProjectEllysia/AcheronSchema.git"
   },
   "license": "UNLICENSED",
   "private": true

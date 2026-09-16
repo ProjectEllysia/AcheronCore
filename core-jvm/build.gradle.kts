@@ -63,7 +63,7 @@ tasks.test {
     // Se usa inputs.files (y no inputs.file) para que un fichero ausente no
     // rompa la configuracion del build: de ese caso ya se queja el test, con
     // un mensaje que explica como regenerarlo.
-    inputs.files(layout.projectDirectory.file("vectors/acheron-vectors-js.json"))
+    inputs.files(layout.projectDirectory.file("../vectors/acheron-vectors-js.json"))
         .withPropertyName("interopVectorsFromJs")
         .optional()
 }

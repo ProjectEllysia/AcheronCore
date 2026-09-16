@@ -1,9 +1,9 @@
 /**
- * Genera `schema.js` a partir de `schema.json`.
+ * Genera `core-web/src/schema.js` a partir de `schema.json`.
  *
  * El JSON es el contrato y la fuente de verdad: es lo que leen Python, Kotlin
  * y Java. Pero un fichero JSON sólo se puede leer del disco, y el consumidor
- * principal de este paquete —el motor criptográfico de la web y de la
+ * principal —el motor criptográfico de `core-web/`, que usará también la
  * extensión de navegador— corre donde no hay disco.
  *
  * De ahí el espejo en JavaScript. Se genera en vez de mantenerse a mano porque
@@ -52,5 +52,5 @@ for (const type of document.types) {
 
 lines.push(']', '')
 
-writeFileSync(resolve(here, 'schema.js'), lines.join('\n'), 'utf8')
-console.log(`schema.js generado: ${document.types.length} tipos`)
+writeFileSync(resolve(here, '../core-web/src/schema.js'), lines.join('\n'), 'utf8')
+console.log(`core-web/src/schema.js generado: ${document.types.length} tipos`)

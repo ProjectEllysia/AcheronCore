@@ -6,7 +6,7 @@
  * vectores), que el `internalId` es un hash de 16 hex, y que la edición solo
  * cifra los campos realmente modificados.
  *
- *   node web/app/test/acheron.crud.test.mjs
+ *   node test/acheron.crud.test.mjs
  */
 
 import { readFileSync } from 'node:fs'
@@ -16,7 +16,7 @@ import { dirname, resolve } from 'node:path'
 import { openVault, WrongPasswordError } from '../dist/src/vault.js'
 
 const here = dirname(fileURLToPath(import.meta.url))
-const vectorsPath = resolve(here, 'acheron-vectors.json')
+const vectorsPath = resolve(here, '../../vectors/acheron-vectors.json')
 
 let passed = 0
 let failed = 0

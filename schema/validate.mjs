@@ -16,10 +16,10 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
-import { STORABLE_SCHEMA, SCHEMA_VERSION } from './index.js'
+import { STORABLE_SCHEMA, SCHEMA_VERSION } from '../core-web/src/schema.js'
 
-// El contrato es el JSON; `schema.js` es su espejo generado, y es lo que
-// importan los consumidores que corren en el navegador. Se lee aqui el JSON
+// El contrato es el JSON; `core-web/src/schema.js` es su espejo generado, y es
+// lo que importa el motor web, que corre en el navegador. Se lee aqui el JSON
 // crudo para poder comparar los dos.
 const SCHEMA_DOCUMENT = JSON.parse(
   readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'schema.json'), 'utf8'),
@@ -144,12 +144,12 @@ for (const type of STORABLE_SCHEMA) {
 // Sin esto, `npm run generate` podria olvidarse tras editar el JSON y los
 // consumidores del navegador seguirian con el catalogo viejo, en silencio.
 check(
-  'schema.js coincide con schema.json',
+  'core-web/src/schema.js coincide con schema.json',
   JSON.stringify(STORABLE_SCHEMA) === JSON.stringify(SCHEMA_DOCUMENT.types),
   'ejecuta `npm run generate`',
 )
 check(
-  'schema.js declara la misma version',
+  'core-web/src/schema.js declara la misma version',
   SCHEMA_VERSION === SCHEMA_DOCUMENT.schemaVersion,
   `js=${SCHEMA_VERSION} json=${SCHEMA_DOCUMENT.schemaVersion}`,
 )

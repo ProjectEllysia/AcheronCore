@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Los storables de este motor tienen que seguir a {@code AcheronSchema}.
+ * Los storables de este motor tienen que seguir al catálogo de {@code schema/schema.json}.
  *
  * El catálogo de tipos de la bóveda está escrito cuatro veces y en cuatro
  * lenguajes: aquí, en la SPA ({@code storableSchema.js}), en la API
@@ -47,17 +47,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * cifrado sea compatible; esto cubre que el catálogo lo sea. Son dos contratos
  * distintos que fallan de formas distintas.
  *
- * <p>La copia versionada del contrato está en {@code vectors/acheron-schema.json}
- * y sale de <a href="https://github.com/ProjectEllysia/AcheronSchema">AcheronSchema</a>
- * @ {@code v1.0.0}. Al actualizarla hay que anotar aquí de qué tag salió: sin
- * esa anotación, una divergencia no se puede atribuir a un cambio concreto del
- * catálogo. Se compara contra la copia y no contra el repositorio remoto porque
- * un test que necesite red no es un test, es una fuente de fallos intermitentes.
+ * <p>El contrato se lee de {@code schema/schema.json}, en la raíz de este
+ * repositorio: es el mismo fichero del que genera su catálogo el motor web, así
+ * que no hay copia que pueda quedarse atrás. Un cambio del catálogo que este
+ * motor no siga falla en el mismo PR que lo introduce.
  */
-@DisplayName("Contrato: los storables siguen a AcheronSchema")
+@DisplayName("Contrato: los storables siguen a schema/schema.json")
 public class StorableSchemaContractTest {
 
-    private static final String SCHEMA = "vectors/acheron-schema.json";
+    private static final String SCHEMA = "../schema/schema.json";
 
     /**
      * Metadatos comunes a todo storable, que añade {@code VaultObject} y que
@@ -86,8 +84,8 @@ public class StorableSchemaContractTest {
         // Un fichero ausente no puede degradar a "cero tests, todo bien".
         if (!Files.exists(path)) {
             throw new IllegalStateException(
-                    "No esta la copia de AcheronSchema en " + path + ". Se copia del "
-                    + "repositorio AcheronSchema a un tag concreto; ver README.");
+                    "No esta el catalogo en " + path + ". Vive en schema/schema.json, "
+                    + "en la raiz del repositorio; el test se ejecuta desde core-jvm/.");
         }
 
         JsonObject root = JsonParser
@@ -139,7 +137,7 @@ public class StorableSchemaContractTest {
         // divergencia real y viva -- este motor y la API serializan
         // creditcard con postalCode antes que cvv, y la SPA y la app Android
         // al reves -- que no rompe nada. Si algun dia el orden importa, el
-        // sitio donde decidirlo es AcheronSchema, no este test.
+        // sitio donde decidirlo es schema/schema.json, no este test.
         assertEquals(expected, actual,
                 kind + ": las claves que serializa este motor no siguen al contrato");
     }

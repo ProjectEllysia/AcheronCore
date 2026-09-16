@@ -47,13 +47,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * verificar interoperabilidad con un cifrado autenticado es DESCIFRAR y
  * comparar el texto en claro.
  *
- * Los vectores se versionan en {@code vectors/acheron-vectors-js.json}; el
- * README explica de dónde salen y cuándo se regeneran.
+ * Los vectores se versionan en {@code vectors/acheron-vectors-js.json}, en la
+ * raíz del repositorio, y los genera el motor web con {@code npm run vectors}
+ * desde {@code core-web/}; {@code vectors/README.md} explica cuándo.
  */
 @DisplayName("Interop JS → Java: leer lo que escribe el cliente web")
 public class InteropFromJsTest {
 
-    private static final String VECTORS = "vectors/acheron-vectors-js.json";
+    private static final String VECTORS = "../vectors/acheron-vectors-js.json";
 
     @TestFactory
     @DisplayName("Cada bóveda escrita por el cliente web se abre y descifra igual")
@@ -65,7 +66,7 @@ public class InteropFromJsTest {
         if (!Files.exists(path)) {
             throw new IllegalStateException(
                     "No estan los vectores del cliente web en " + path + ". Se regeneran con "
-                    + "`node web/app/test/acheron.vectorgen.mjs` en EllysiaServer; ver README.");
+                    + "`npm run vectors` desde core-web/; ver vectors/README.md.");
         }
 
         JsonObject root = JsonParser

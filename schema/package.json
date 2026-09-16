@@ -1,0 +1,11 @@
+{
+  "name": "@projectellysia/acheron-schema",
+  "description": "Acheron storable catalogue - language-neutral data contract for both engines",
+  "type": "module",
+  "scripts": {
+    "generate": "node generate.mjs",
+    "test": "node validate.mjs"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

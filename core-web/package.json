@@ -1,0 +1,44 @@
+{
+  "name": "@projectellysia/acheron-core-web",
+  "version": "2.2.0",
+  "description": "Acheron vault crypto engine for JavaScript - same wire format as the JVM engine in AcheronCore",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./sync": {
+      "types": "./dist/src/sync.d.ts",
+      "default": "./dist/src/sync.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "prepare": "tsc",
+    "pretest": "tsc",
+    "test": "node test/acheron.schema.test.mjs && node test/acheron.contract.test.mjs && node test/acheron.interop.test.mjs && node test/acheron.crud.test.mjs && node test/acheron.sync.test.mjs",
+    "vectors": "npm run build && node test/acheron.vectorgen.mjs"
+  },
+  "dependencies": {
+    "hash-wasm": "^4.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProjectEllysia/AcheronCore.git",
+    "directory": "core-web"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

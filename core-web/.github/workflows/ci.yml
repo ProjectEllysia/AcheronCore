@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    name: Suites
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # package-lock.json esta en .gitignore, asi que no hay lockfile que
+      # cachear ni con el que hacer `npm ci`.
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      # npm test compila antes (pretest), asi que esto cubre tipos y
+      # comportamiento. Entre las suites va la de interoperabilidad, que
+      # comprueba contra los vectores de AcheronCore que este motor sigue
+      # hablando el mismo formato de cable que la implementacion Java.
+      - name: Typecheck and run suites
+        run: npm test
+
+  publish:
+    name: Publish to GitHub Packages
+    needs: tests
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: https://npm.pkg.github.com
+          scope: '@projectellysia'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      # La version del paquete la manda el TAG, no lo que diga package.json:
+      # asi no se puede publicar una version distinta de la que se etiqueto.
+      - name: Version from tag
+        run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version --allow-same-version
+
+      # `prepare` compila, asi que lo que se publica es siempre dist/ recien
+      # construido y nunca un dist/ viejo que alguien tuviera en local.
+      - name: Publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

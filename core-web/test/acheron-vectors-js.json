@@ -1,0 +1,225 @@
+{
+  "cases": [
+    {
+      "kdf": "Argon2",
+      "masterPassword": "correct horse battery staple",
+      "username": "alice",
+      "vault": {
+        "version": 1,
+        "checker": "V+MQmj/tA4vhoVjPtlXWnV6d4ytGThd7qMwFmuqCtw5a7EYoxmQcTsFygKwpeVSrTafRzlgZQTeH/VAzG/n4V8u9iaG9/M0KqXEn/OuM4stpQvyPu3CqNq9v44E=",
+        "vaultKey": "GkJkRpIh8YqhgQNFaiQC1EV5v1wsjeLSwfevmPwBizorsJPNp3NsXP881O6qaiagrkyekz//2imrnD0lEEFu6cgYGimvZbj4",
+        "algorithm": {
+          "transformation": "AES/GCM/NoPadding",
+          "kdf": "Argon2",
+          "kdfIterations": "3",
+          "kdfMemoryKiB": "65536",
+          "kdfParallelism": "1",
+          "salt": "teAmPoSG2T/H79h/YpP5AQ=="
+        },
+        "accounts": [
+          {
+            "id": "ab255d6749f62125",
+            "allowedUsers": [],
+            "title": "i4565hHKkIeuYddcl4qg44AW/MM/ejHQ3aY7Y8xdUb6+",
+            "createdAt": "2026-09-05T19:01:59.137Z",
+            "updatedAt": "2026-09-05T19:01:59.137Z",
+            "username": "8G/5AY+eWvRm07VgzwRgKCl4JpNpHb9xQ0marRm3VjksY6Pnh5SdUhBNMw==",
+            "domain": "DYN2j63fMoT2ILk2iF+mz2H8QV5iTEmFc7E3iM05q3qrzZysUj2AatVQ4Q==",
+            "password": "JH/KbzfEG+RxzdiIPYyBr5fnLJKRJirFT9Qy0kkY3IC9h0bOOlF6jIiS"
+          }
+        ],
+        "creditcards": [
+          {
+            "id": "24262d82f5deb19a",
+            "allowedUsers": [],
+            "title": "6SceF+eKuH5j0IIBOTfI/+yzEHEfEHTJDkxesGS8gxa9eHN1tTmvKxI=",
+            "createdAt": "2026-09-05T19:01:59.139Z",
+            "updatedAt": "2026-09-05T19:01:59.139Z",
+            "cardHolderName": "RDNpSMXBM9d+rL6SSI0wyGfOgw6VW29IhRDy0XnVT1C7mR0bbg==",
+            "cardNumber": "Wx410ILmp+qijC3eqVEPOCdPlfVig/lpfsctkrKfX5OGIDrgk9QVY6dpxnA=",
+            "expirationDate": "uNom4snzzumhPV3p8C8ivNJsa3RIF03tEuxJQ/E8t0I8",
+            "cvv": "dJSD83P5L1G5L86nNyR1y34VjrsandeIaKVJhuUfJA==",
+            "postalCode": "fPg0+IK0T92ZuuFF2BPJ2ujXlw0MNL5K1s3ycP8c6tdZ"
+          }
+        ],
+        "securenotes": [
+          {
+            "id": "9cd97e9876b4bec6",
+            "allowedUsers": [],
+            "title": "YLVmuo864o64F2pQjqxiqQ5xNRyuErxHOMo1uqADvk7KAKpA+ttXTSRY",
+            "createdAt": "2026-09-05T19:01:59.139Z",
+            "updatedAt": "2026-09-05T19:01:59.139Z",
+            "content": "T1ZjxuQj3PeMSzg3V3VYdMmM/XR27qHv4wcsqfte0yAjIVV1Cl42F7Sx6FU4lL1BkQt2PosDynQDclptdSAHR8NE0MgK0oe1D7HIAc/tQs4="
+          }
+        ]
+      },
+      "expected": {
+        "ab255d6749f62125": {
+          "title": "Gmail",
+          "username": "alice@gmail.com",
+          "domain": "mail.google.com",
+          "password": "P@ssw0rd-acc-0"
+        },
+        "24262d82f5deb19a": {
+          "title": "Personal Card",
+          "cardHolderName": "ALICE DOE",
+          "cardNumber": "4111111111111111",
+          "expirationDate": "12/29",
+          "postalCode": "28001",
+          "cvv": "123"
+        },
+        "9cd97e9876b4bec6": {
+          "title": "Recovery codes",
+          "content": "linea uno\nlinea dos con acentos: ñ á ü\nlinea tres"
+        }
+      }
+    },
+    {
+      "kdf": "PBKDF2",
+      "masterPassword": "correct horse battery staple",
+      "username": "alice",
+      "vault": {
+        "version": 1,
+        "algorithm": {
+          "transformation": "AES/GCM/NoPadding",
+          "kdf": "PBKDF2",
+          "kdfIterations": "600000",
+          "kdfKeyLength": "256",
+          "salt": "5eCglTpYcYhAyEcUMCmUrA=="
+        },
+        "checker": "L5jigq3KcgXZycpu/SVCfvru4726i78za9jZoK3XcXX7+wD4mwL327raQ6J4qAxr2n1FPpYgusgwgdKFSizViaq9OmGKVcEFWTcmEJ8wTIOVWy3BqnuADr0m0NM=",
+        "vaultKey": "3qrDzr/TVY9jAvyIuPrmNnln2w03rpfkqIqP9iGwgzAeol8h+FpjsV3kcfXy60bSJJa9yXRCcabGhCKkVXx/NOqcwCeZ93OQ",
+        "accounts": [
+          {
+            "id": "d4472d14bb0b3d15",
+            "allowedUsers": [],
+            "title": "DSoHJC0Ys8hj+PbtupsR6z4bwHXbWs3qNdYzeNX21eBC",
+            "createdAt": "2026-09-05T19:01:59.274Z",
+            "updatedAt": "2026-09-05T19:01:59.274Z",
+            "username": "h9kK+aS6gddtL1lv+PbPQ6uDNLeyvjc7qC4N8irtYFR4Pfkt0H5eo4qSQg==",
+            "domain": "fFYKzuUb9t3WIr9ZElQ5zVVbbKVcypLa/hhCKUogXF5iqAoYHSHJKiichQ==",
+            "password": "8pNX0m2ErVeQQJTmexKYAXQaHqkr8sJ/P7lIjnvVCgdLhKPbHWydFIcI"
+          }
+        ],
+        "creditcards": [
+          {
+            "id": "62a0304f1931b286",
+            "allowedUsers": [],
+            "title": "fgLrDrQJq1PZcRXdxOB0HWjJcAjS9KVR0oADfQm392GPSL/n6xYgDLc=",
+            "createdAt": "2026-09-05T19:01:59.274Z",
+            "updatedAt": "2026-09-05T19:01:59.274Z",
+            "cardHolderName": "Ig2MTeZf6iZOCxy+bPK3O402XDBHcLCPSuTddX+y4JOyRryhtg==",
+            "cardNumber": "NOAjE7HDmCSqV/rKLTwZvGa9QItRX7CrkrAcrG0XF21NJ7vZuoa0aClirLw=",
+            "expirationDate": "+NGTf9t2jeryQT4B/yTLwT1WUe9tJB5FYB6hrCIPWehj",
+            "cvv": "tMw4xc/hzbO4CcZYLcLYhG01i9G8y6ST88pqGr57CQ==",
+            "postalCode": "ge9yPh4g8aWkRDk/xpzQngq4EvcKcWwI118dOKbGok4Q"
+          }
+        ],
+        "securenotes": [
+          {
+            "id": "d82de1cc77b72cd5",
+            "allowedUsers": [],
+            "title": "3NnzCUH2pSLtt8KsTfrxQEKiPws1erQtDlQp/Yww0YkJI823WKrPwLc/",
+            "createdAt": "2026-09-05T19:01:59.275Z",
+            "updatedAt": "2026-09-05T19:01:59.275Z",
+            "content": "5te5vsRg4nC9sU7t4YNSUivs5YULXIeMJQc728ZBOMBiIjehyTY5xvcYwOVroT3dmIpqN7WClNi2Ah3EuQfGS8LN8//k/APNVOWS9HcwYWA="
+          }
+        ]
+      },
+      "expected": {
+        "d4472d14bb0b3d15": {
+          "title": "Gmail",
+          "username": "alice@gmail.com",
+          "domain": "mail.google.com",
+          "password": "P@ssw0rd-acc-0"
+        },
+        "62a0304f1931b286": {
+          "title": "Personal Card",
+          "cardHolderName": "ALICE DOE",
+          "cardNumber": "4111111111111111",
+          "expirationDate": "12/29",
+          "postalCode": "28001",
+          "cvv": "123"
+        },
+        "d82de1cc77b72cd5": {
+          "title": "Recovery codes",
+          "content": "linea uno\nlinea dos con acentos: ñ á ü\nlinea tres"
+        }
+      }
+    },
+    {
+      "kdf": "Argon2-rotado",
+      "masterPassword": "correct horse battery staple-rotada",
+      "username": "alice",
+      "vault": {
+        "version": 1,
+        "checker": "4wmSNFrcwrcSaaTiTQcyj68TJg9iJvrX7JobV3gBlaMY2mZ7Qh4q8tnuAlRVW9RT2pKW1tfzQd/3nZ3yu5eJpferfQqNIW8hajN25recMX3USGRzcsBPwz2M1g0=",
+        "vaultKey": "Q8Q7j8evtTXlilePWnJWQyc6xXKKFBkBKrinZ1daLdF1lXom8v04DxzwJAfBfpwRZItp+y+e/yrdhRmhevEde3jG4I74ayP2",
+        "algorithm": {
+          "transformation": "AES/GCM/NoPadding",
+          "kdf": "Argon2",
+          "kdfIterations": "3",
+          "kdfMemoryKiB": "65536",
+          "kdfParallelism": "1",
+          "salt": "ydG9dcTHEHfgq/xZG2O5Ng=="
+        },
+        "accounts": [
+          {
+            "id": "5886f91a3f1f31ac",
+            "allowedUsers": [],
+            "title": "yrmgfhEwZ/ABDeFF1RhH+uXOUeFW3Lmik+i4ojWf7X4G",
+            "createdAt": "2026-09-05T19:01:59.550Z",
+            "updatedAt": "2026-09-05T19:01:59.550Z",
+            "username": "q/aaCFVTVkL0qEivgfoAL74JVhAPkqsEu7DcKe0L9WHKonKNsxCkmHW4sw==",
+            "domain": "kHtml47W/rN65QvU3jcPh0ZHT6G/HhKveikhh2khRsBjovm8pJBFtQ2Dvw==",
+            "password": "DMcmZI+hvM/SD6OPjjexaFcab1odfeP3BH2v8FyFw5O2lrndVT3Gdip7"
+          }
+        ],
+        "creditcards": [
+          {
+            "id": "6f5ffa05c0878483",
+            "allowedUsers": [],
+            "title": "f+dkFohQ4zH5mrg/MEbenV1iVTinvcxoPhpEz+PNO5WKrXztOBRA2rc=",
+            "createdAt": "2026-09-05T19:01:59.551Z",
+            "updatedAt": "2026-09-05T19:01:59.551Z",
+            "cardHolderName": "mGV9K38BO2EpQoek6cmsWIDwbha1fr5fRajvs6rV8cuwQ9JjKQ==",
+            "cardNumber": "R7yJFrSyX/mi+GElMD0rOp/S0ggn6yNeRnOFrIjWAXtv76TXCGkcwjGlv9Q=",
+            "expirationDate": "XbUoN/KErnpcA3xe3WHu85EQo5FlA4RBzKT3xYNa3mLr",
+            "cvv": "rKLkymkGGSosJ8HjOG5k1QM+swMb071UBdWL8bYpGQ==",
+            "postalCode": "XU4ZdOH32ORAujv9SQor4CWajRM/pUV6X0jKj35EleoF"
+          }
+        ],
+        "securenotes": [
+          {
+            "id": "95a9c14fe8e80ae4",
+            "allowedUsers": [],
+            "title": "DVV2Dw2pgz0ePNDxlJUGwxJCVyrCYL+A0RLmMW2qelH300XdA2K/0qZl",
+            "createdAt": "2026-09-05T19:01:59.551Z",
+            "updatedAt": "2026-09-05T19:01:59.551Z",
+            "content": "ypdrd+VpiXaEi5m0uKicn5blclztfWHL2DQ8MUH0HNny0j0szijCuwDdiPYxDbA5Xjp9L/nxx0kVd3SyYFb0/GpAl0+fmfuIW30nHTLKDAY="
+          }
+        ]
+      },
+      "expected": {
+        "5886f91a3f1f31ac": {
+          "title": "Gmail",
+          "username": "alice@gmail.com",
+          "domain": "mail.google.com",
+          "password": "P@ssw0rd-acc-0"
+        },
+        "6f5ffa05c0878483": {
+          "title": "Personal Card",
+          "cardHolderName": "ALICE DOE",
+          "cardNumber": "4111111111111111",
+          "expirationDate": "12/29",
+          "postalCode": "28001",
+          "cvv": "123"
+        },
+        "95a9c14fe8e80ae4": {
+          "title": "Recovery codes",
+          "content": "linea uno\nlinea dos con acentos: ñ á ü\nlinea tres"
+        }
+      }
+    }
+  ]
+}

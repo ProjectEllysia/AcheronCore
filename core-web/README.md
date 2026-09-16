@@ -1,4 +1,4 @@
-# Acheron Core Web
+# Acheron Core — motor web
 
 El motor criptográfico de la bóveda de Acheron, en **TypeScript**.
 
@@ -7,10 +7,9 @@ es *zero-knowledge*, guarda un blob que no sabe leer y nunca ve la contraseña m
 claro. Este paquete es la mitad del cliente que hace ese trabajo, y lo consumen el cliente web y la
 extensión de navegador.
 
-## Su relación con AcheronCore
+## Su relación con el motor Java
 
-[`AcheronCore`](https://github.com/ProjectEllysia/AcheronCore) hace lo mismo en Java, para la app
-Android. **No comparten una línea de código**: cada uno implementa por su cuenta el mismo *formato
+[`core-jvm/`](../core-jvm/README.md) hace lo mismo en Java, para la app Android. **No comparten una línea de código**: cada uno implementa por su cuenta el mismo *formato
 de cable* —cuántas pasadas de Argon2id, en qué orden van los bytes, dónde acaba el vector de
 inicialización y empieza el texto cifrado—.
 
@@ -20,7 +19,7 @@ móvil, y viceversa.
 
 Como no se puede comparar código Java contra código JavaScript, se comparan **resultados sobre
 entradas conocidas**: los vectores de interoperabilidad, en los dos sentidos. Están descritos en
-[`test/README.md`](test/README.md), y son lo único que garantiza que las dos implementaciones no se
+[`vectors/README.md`](../vectors/README.md), y son lo único que garantiza que las dos implementaciones no se
 han separado.
 
 ## Qué hay dentro
@@ -31,14 +30,13 @@ han separado.
 | `src/crypto.ts` | primitivas: Argon2id/PBKDF2, AES-GCM, Base64, el *checker* |
 | `src/vault.ts` | abrir una bóveda, descifrar y recifrar storables, rotar la contraseña |
 | `src/storableFields.ts` | qué campos cifra cada tipo, derivado del catálogo |
-| `src/schema.js` | copia del catálogo de storables (ver abajo) |
+| `src/schema.js` | el catálogo de storables, generado desde `schema/` (ver abajo) |
 | `src/passwordGenerator.ts` | generador de contraseñas |
 | `src/passwordStrength.ts` | medidor de robustez |
 | `src/sync.ts` | concurrencia optimista con la API — **entrada aparte** |
 
-`src/schema.js` es el único que sigue en JavaScript, y a propósito: es una copia literal de un
-fichero generado en otro repositorio, y convertirlo rompería esa propiedad. Su forma la declara
-`src/schema.d.ts`.
+`src/schema.js` es el único que sigue en JavaScript, y a propósito: lo escribe un generador, que así
+no necesita saber nada de tipos. Su forma la declara `src/schema.d.ts`.
 
 `sync.ts` se expone en `@projectellysia/acheron-core-web/sync` y no en la entrada principal. No es
 criptografía: es el protocolo REST de Ellysia (`If-Match`, `409 vault_revision_mismatch`), y son dos
@@ -47,21 +45,11 @@ de quien lo usa.
 
 ## El catálogo de storables
 
-`src/schema.js` es una **copia** del catálogo que vive en
-[`AcheronSchema`](https://github.com/ProjectEllysia/AcheronSchema), el contrato compartido con la
-API, la app Android y `AcheronCore`.
-
-Es una copia y no una dependencia npm por una razón temporal: los repositorios de la organización
-son privados, así que instalar desde otro repositorio exige credenciales que esta CI todavía no
-tiene. Convertirlo en dependencia con versión fijada llega con la publicación en GitHub Packages.
-
-Mientras tanto, `test/acheron.schema.test.mjs` ata la copia al contrato, igual que hacen los otros
-tres clientes con la suya. Sin esa verificación, la copia sería un quinto sitio donde el catálogo
-puede divergir.
-
-| | |
-|---|---|
-| **Copiado de** | `AcheronSchema` @ [`v1.1.0`](https://github.com/ProjectEllysia/AcheronSchema/releases/tag/v1.1.0) |
+`src/schema.js` no se edita a mano: lo genera `schema/generate.mjs` a partir de
+[`schema/schema.json`](../schema/README.md), el contrato compartido con el motor Java, la API y la
+app Android. `npm test` en `schema/` comprueba que no se ha separado del JSON, y
+`test/acheron.schema.test.mjs` comprueba aquí que los índices que el motor deriva de él (qué campos
+cifra cada tipo) siguen al contrato.
 
 ## Uso
 
@@ -88,11 +76,12 @@ npm install
 npm run build     # compila a dist/ con sus declaraciones
 npm run typecheck # comprueba tipos sin emitir
 npm test          # compila y corre: catálogo + contratos + interop + CRUD + sync
-npm run vectors   # regenera los vectores que consume AcheronCore
+npm run vectors   # regenera vectors/acheron-vectors-js.json, que lee el motor Java
 ```
 
 Las suites corren con `node` a secas, sin framework ni navegador, y salen con código distinto de
-cero al fallar. Corren contra **`dist/`**, no contra el fuente: lo que interesa verificar es lo que
+cero al fallar. Leen `../schema/` y `../vectors/`, así que se ejecutan dentro del repositorio
+completo. Corren contra **`dist/`**, no contra el fuente: lo que interesa verificar es lo que
 recibe el consumidor.
 
 `tsconfig.json` va en `strict` con `noUncheckedIndexedAccess`. Ese último es incómodo y se ganó su

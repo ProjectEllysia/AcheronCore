@@ -5,7 +5,7 @@ plugins {
 
 group = "com.ellysia"
 // Las releases se publican desde un tag (v1.2.3 -> 1.2.3); en local es snapshot.
-version = System.getenv("RELEASE_VERSION") ?: "1.0.0-SNAPSHOT"
+version = System.getenv("RELEASE_VERSION") ?: "2.2.0-SNAPSHOT"
 
 repositories {
     mavenCentral()

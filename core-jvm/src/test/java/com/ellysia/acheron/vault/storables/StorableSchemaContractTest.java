@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Los storables de este motor tienen que seguir a {@code AcheronSchema}.
+ * Los storables de este motor tienen que seguir al catálogo de {@code schema/schema.json}.
  *
  * El catálogo de tipos de la bóveda está escrito cuatro veces y en cuatro
  * lenguajes: aquí, en la SPA ({@code storableSchema.js}), en la API
@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * que no hay copia que pueda quedarse atrás. Un cambio del catálogo que este
  * motor no siga falla en el mismo PR que lo introduce.
  */
-@DisplayName("Contrato: los storables siguen a AcheronSchema")
+@DisplayName("Contrato: los storables siguen a schema/schema.json")
 public class StorableSchemaContractTest {
 
     private static final String SCHEMA = "../schema/schema.json";
@@ -137,7 +137,7 @@ public class StorableSchemaContractTest {
         // divergencia real y viva -- este motor y la API serializan
         // creditcard con postalCode antes que cvv, y la SPA y la app Android
         // al reves -- que no rompe nada. Si algun dia el orden importa, el
-        // sitio donde decidirlo es AcheronSchema, no este test.
+        // sitio donde decidirlo es schema/schema.json, no este test.
         assertEquals(expected, actual,
                 kind + ": las claves que serializa este motor no siguen al contrato");
     }

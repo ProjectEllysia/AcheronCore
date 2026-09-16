@@ -57,16 +57,13 @@ para el usuario.
 Lo que **no** hay aquí, y no debe haberlo: etiquetas, plurales legibles, pistas de formulario,
 orden de presentación, iconos. Todo eso es de cada cliente. El validador lo impide activamente.
 
-**`schema.js`** es el mismo catálogo como módulo JavaScript, **generado** desde el JSON. Existe
-porque un fichero JSON sólo se puede leer del disco, y el consumidor principal de este paquete —el
-motor criptográfico de la web y de la extensión de navegador— corre donde no hay disco. No se edita
-a mano: se regenera con `npm run generate`, y `npm test` comprueba que no se ha separado del JSON.
+**`generate.mjs`** escribe el mismo catálogo como módulo JavaScript en `core-web/src/schema.js`.
+Existe porque un fichero JSON sólo se puede leer del disco, y el motor web —y la extensión de
+navegador que lo usa— corre donde no hay disco. Ese módulo no se edita a mano: se regenera con
+`npm run generate`, y `npm test` comprueba que no se ha separado del JSON.
 
-**`index.js`** es un lector para consumidores JavaScript, con los índices que todos acaban
-necesitando (por `kind`, por `category`, claves por categoría, campos secretos por categoría).
-Importa de `schema.js`, así que funciona igual en Node y en el navegador.
-
-Python, Kotlin y Java leen el JSON directamente; no necesitan librería.
+El motor Java lee el JSON directamente desde sus tests; Python y Kotlin llevan su propia copia y la
+verifican en su suite.
 
 ## `matchKey`: qué campo se compara con la URL
 
@@ -114,36 +111,26 @@ acostumbrado a verlas. Por eso se empieza estrecho.
 
 ## Consumir el esquema
 
-```bash
-npm install github:ProjectEllysia/AcheronSchema#v1.0.0
-```
+Dentro de este repositorio, los dos motores lo leen por ruta relativa: no hay copia.
 
-```js
-import { SCHEMA_BY_CATEGORY, FIELDS_BY_CATEGORY } from '@projectellysia/acheron-schema'
-```
-
-Desde otros lenguajes, léelo como el JSON que es. Cada consumidor debe **verificar su copia contra
-este fichero en su propia suite** en lugar de confiar en que coinciden; ése es el objetivo, y sin
-esa verificación este repositorio sería un quinto sitio donde escribir lo mismo en vez del sitio
-donde está escrito.
+Fuera de él (la API de Ellysia y la app Android), cada consumidor lleva una copia de `schema.json`
+**tomada del tag de AcheronCore que consume** y anotada con ese tag, y la verifica contra su propio
+código en su suite. Sin esa verificación, la copia sería un sitio más donde escribir lo mismo en vez
+del sitio donde está escrito.
 
 ## Cambiar el catálogo
 
-Añadir un tipo o un campo es un cambio de contrato entre cuatro implementaciones. El orden importa:
+Añadir un tipo o un campo es un cambio de contrato entre varias implementaciones:
 
-1. **Aquí primero.** Se edita `schema.json`, pasa `npm test` y se publica con un tag nuevo.
-2. **Después cada consumidor**, actualizando su copia y su verificación.
-
-Al revés no funciona: un consumidor que añada un campo antes que el esquema verá fallar su propia
-suite, que es justo lo que debe pasar.
-
-**Fija la versión que consumes.** Nada de rangos: en un contrato que decide qué campos se cifran,
-una actualización automática es un cambio que nadie revisó.
+1. **En este repositorio, un solo PR**: `schema.json`, el `core-web/src/schema.js` regenerado y los
+   dos motores. Las tres suites tienen que pasar.
+2. **Se publica una versión** de AcheronCore, que saca los dos motores con el mismo número.
+3. **Después cada consumidor externo** sube a esa versión y actualiza su copia.
 
 ## Desarrollo
 
 ```bash
-npm test        # valida schema.json
+npm test        # valida schema.json y su espejo en core-web/src/schema.js
 ```
 
 El validador comprueba la forma del documento (versión, claves permitidas), la unicidad de `kind`,

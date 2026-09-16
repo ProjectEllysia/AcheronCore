@@ -6,7 +6,7 @@
  * obsoleta recargando antes el vault, y que no confunde ese 409 con el de
  * internalId duplicado.
  *
- *   node web/app/test/acheron.sync.test.mjs
+ *   node test/acheron.sync.test.mjs
  */
 
 import { vaultWrite } from '../dist/src/sync.js'

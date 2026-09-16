@@ -1,7 +1,7 @@
 {
   "name": "@projectellysia/acheron-core-web",
-  "version": "2.1.0",
-  "description": "Acheron vault crypto engine for JavaScript - mirror of AcheronCore's wire format",
+  "version": "2.2.0",
+  "description": "Acheron vault crypto engine for JavaScript - same wire format as the JVM engine in AcheronCore",
   "type": "module",
   "main": "dist/index.js",
   "exports": {
@@ -30,7 +30,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ProjectEllysia/AcheronCoreWeb.git"
+    "url": "git+https://github.com/ProjectEllysia/AcheronCore.git",
+    "directory": "core-web"
   },
   "license": "UNLICENSED",
   "devDependencies": {

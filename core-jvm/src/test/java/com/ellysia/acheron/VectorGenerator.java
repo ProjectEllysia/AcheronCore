@@ -31,7 +31,7 @@ import java.util.Date;
  * cliente web (JS). Es la fuente de verdad de la interoperabilidad: AcheronCore
  * cifra unos vaults con master password y salt conocidos y vuelca su JSON (en
  * el mismo formato que devuelve {@code GET /vault}) junto con los valores en
- * texto plano esperados. El test JS (web/app/test/acheron.interop.test.mjs)
+ * texto plano esperados. El test JS (core-web/test/acheron.interop.test.mjs)
  * abre esos vaults y comprueba que descifra exactamente lo esperado.
  *
  * No es un test de aserción: es un generador. Corre con el resto de la suite

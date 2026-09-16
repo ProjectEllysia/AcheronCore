@@ -1,5 +1,5 @@
 /**
- * Superficie pública de AcheronCoreWeb.
+ * Superficie pública del motor web de AcheronCore.
  *
  * El motor criptográfico de la bóveda de Acheron para JavaScript. Es el espejo
  * de `AcheronCore` (Java, para Android): no comparte código con él, implementa

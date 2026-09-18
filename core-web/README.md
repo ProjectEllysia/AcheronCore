@@ -41,7 +41,31 @@ sabe de tipos es la anotación `SchemaType[]`, y las interfaces con su documenta
 quien deducía la declaración del contenido del catálogo y la emitía encima de la escrita a mano: el
 consumidor recibía un tipo inferido del catálogo de ese día en lugar del contrato documentado.
 
-`sync.ts` se expone en `@projectellysia/acheron-core-web/sync` y no en la entrada principal. No es
+## El nombre del paquete cambió en la 2.4.0
+
+Este motor se publicó como **`@projectellysia/acheron-core-web`** hasta la 2.3.0 incluida. Desde la
+2.4.0 se publica como **`@projectellysia/acheron-core-js`**, y el paquete viejo queda congelado
+donde está: no se borra, no recibe versiones nuevas.
+
+El motivo no es estético. Un paquete npm de GitHub Packages queda **vinculado al repositorio desde
+el que se publicó por primera vez**, y ese vínculo no se mueve después. `acheron-core-web` nació en
+el repositorio del mismo nombre, que se archivó al unificar todo aquí, así que aunque sus últimas
+versiones salieran ya de `AcheronCore`, seguía colgando de un repositorio archivado y heredando sus
+permisos. La consecuencia práctica: la CI de un consumidor recibía un `403 permission_denied` al
+instalarlo, y arreglarlo dependía de un ajuste manual en la interfaz de GitHub que además el
+archivado bloqueaba.
+
+Un paquete con nombre nuevo, publicado desde aquí, nace vinculado a un repositorio **público y
+vivo**, y hereda su visibilidad sin que nadie tenga que tocar un ajuste. Es la causa del problema
+y no su síntoma.
+
+El nombre aprovecha para decir mejor lo que distingue a los dos motores. `-web` sugería la
+plataforma, pero lo que los separa no es dónde corren —este también corre en una extensión y en
+Node— sino **en qué lenguaje están escritos**, que es justo el eje del que habla el README de la
+raíz: el motor en Java y el motor en TypeScript. `acheron-core` y `acheron-core-js` son la misma
+pareja, nombrada por su lenguaje.
+
+`sync.ts` se expone en `@projectellysia/acheron-core-js/sync` y no en la entrada principal. No es
 criptografía: es el protocolo REST de Ellysia (`If-Match`, `409 vault_revision_mismatch`), y son dos
 cosas que cambian a ritmos muy distintos. Separarlas mantiene visible ese acoplamiento en el import
 de quien lo usa.
@@ -57,7 +81,7 @@ cifra cada tipo) siguen al contrato.
 ## Uso
 
 ```js
-import { openVault, WrongPasswordError } from '@projectellysia/acheron-core-web'
+import { openVault, WrongPasswordError } from '@projectellysia/acheron-core-js'
 
 const vault = await openVault(vaultJson, masterPassword, username)
 const account = await vault.decryptStorable('accounts', item)

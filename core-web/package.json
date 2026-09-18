@@ -1,5 +1,5 @@
 {
-  "name": "@projectellysia/acheron-core-web",
+  "name": "@projectellysia/acheron-core-js",
   "version": "2.2.0",
   "description": "Acheron vault crypto engine for JavaScript - same wire format as the JVM engine in AcheronCore",
   "type": "module",

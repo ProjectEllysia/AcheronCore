@@ -14,7 +14,7 @@ dejaran de coincidir, una credencial guardada desde el móvil no se podría abri
 | Carpeta | Qué es | Se publica como |
 |---|---|---|
 | [`core-jvm/`](core-jvm/README.md) | El motor en Java 17 | `com.ellysia:acheron-core` (Maven, GitHub Packages) |
-| [`core-web/`](core-web/README.md) | El motor en TypeScript | `@projectellysia/acheron-core-web` (npm, GitHub Packages) |
+| [`core-web/`](core-web/README.md) | El motor en TypeScript | `@projectellysia/acheron-core-js` (npm, GitHub Packages) |
 | [`schema/`](schema/README.md) | El catálogo de storables: qué tipos guarda una bóveda y con qué campos | no se publica; lo leen los dos motores |
 | [`vectors/`](vectors/README.md) | Bóvedas cifradas por un motor que el otro tiene que saber abrir | no se publica; lo leen las dos suites |
 
@@ -25,11 +25,15 @@ ata con **datos compartidos**, no con código compartido: un único `schema/sche
 juego de vectores, leídos por ruta relativa desde las dos suites. Una divergencia entre motores
 falla en el mismo PR que la introduce.
 
+> **El paquete npm cambió de nombre en la 2.4.0**: era `@projectellysia/acheron-core-web` y ahora es
+> `@projectellysia/acheron-core-js`. El viejo queda congelado en la 2.3.0. El porqué —un vínculo a un
+> repositorio archivado que no se puede mover— está en [`core-web/README.md`](core-web/README.md).
+
 ## Versiones
 
 Los dos paquetes salen **siempre juntos y con el mismo número**, aunque solo uno haya cambiado. El
 número no significa «este paquete cambió», sino «esta pareja de motores es interoperable»: la app
-Android con `acheron-core` 2.2.0 y la SPA con `acheron-core-web` 2.2.0 leen y escriben las mismas
+Android con `acheron-core` 2.4.0 y la SPA con `acheron-core-js` 2.4.0 leen y escriben las mismas
 bóvedas.
 
 Un consumidor fija la versión exacta, sin rangos. En un contrato que decide qué campos se cifran,

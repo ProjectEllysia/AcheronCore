@@ -11,7 +11,7 @@
  * la contraseña maestra ni el texto en claro.
  *
  * El punto de entrada de la concurrencia optimista con la API vive aparte, en
- * `acheron-core-web/sync`: eso es el protocolo REST de Ellysia y no el formato
+ * `acheron-core-js/sync`: eso es el protocolo REST de Ellysia y no el formato
  * criptográfico, y son dos cosas que cambian a ritmos muy distintos.
  */
 

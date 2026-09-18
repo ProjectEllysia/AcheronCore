@@ -1,5 +1,5 @@
 /**
- * El catálogo como MÓDULO JavaScript, generado desde `schema.json`.
+ * El catálogo como MÓDULO, generado desde `schema.json`.
  *
  * `schema.json` es el contrato y la fuente de verdad, pero un fichero JSON
  * sólo se puede leer del disco, y el consumidor principal de este paquete es
@@ -8,14 +8,18 @@
  * importar sin tocar el sistema de ficheros.
  *
  * NO SE EDITA A MANO. Se regenera con `npm run generate`, y `npm test`
- * comprueba que no se ha separado del JSON.
+ * comprueba que no se ha separado del JSON. Los tipos que anota están
+ * escritos a mano en `schemaTypes.ts`, que sí se edita.
  */
+import type { SchemaType } from './schemaTypes.js'
+
 export const SCHEMA_VERSION = 1
 
-export const STORABLE_SCHEMA = [
+export const STORABLE_SCHEMA: SchemaType[] = [
   {
     kind: "account", category: "accounts",
     matchKey: "domain",
+    identityKey: "username",
     fields: [
       { key: "username" },
       { key: "domain" },

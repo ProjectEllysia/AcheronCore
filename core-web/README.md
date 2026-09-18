@@ -30,13 +30,16 @@ han separado.
 | `src/crypto.ts` | primitivas: Argon2id/PBKDF2, AES-GCM, Base64, el *checker* |
 | `src/vault.ts` | abrir una bóveda, descifrar y recifrar storables, rotar la contraseña |
 | `src/storableFields.ts` | qué campos cifra cada tipo, derivado del catálogo |
-| `src/schema.js` | el catálogo de storables, generado desde `schema/` (ver abajo) |
+| `src/schema.ts` | el catálogo de storables, generado desde `schema/` (ver abajo) |
 | `src/passwordGenerator.ts` | generador de contraseñas |
 | `src/passwordStrength.ts` | medidor de robustez |
 | `src/sync.ts` | concurrencia optimista con la API — **entrada aparte** |
 
-`src/schema.js` es el único que sigue en JavaScript, y a propósito: lo escribe un generador, que así
-no necesita saber nada de tipos. Su forma la declara `src/schema.d.ts`.
+`src/schema.ts` lo escribe un generador, así que no se edita a mano; lo único que ese generador
+sabe de tipos es la anotación `SchemaType[]`, y las interfaces con su documentación viven aparte, en
+`src/schemaTypes.ts`. Estuvo en JavaScript hasta la 2.3.0, y se cambió porque con un `.js` era `tsc`
+quien deducía la declaración del contenido del catálogo y la emitía encima de la escrita a mano: el
+consumidor recibía un tipo inferido del catálogo de ese día en lugar del contrato documentado.
 
 `sync.ts` se expone en `@projectellysia/acheron-core-web/sync` y no en la entrada principal. No es
 criptografía: es el protocolo REST de Ellysia (`If-Match`, `409 vault_revision_mismatch`), y son dos
@@ -45,7 +48,7 @@ de quien lo usa.
 
 ## El catálogo de storables
 
-`src/schema.js` no se edita a mano: lo genera `schema/generate.mjs` a partir de
+`src/schema.ts` no se edita a mano: lo genera `schema/generate.mjs` a partir de
 [`schema/schema.json`](../schema/README.md), el contrato compartido con el motor Java, la API y la
 app Android. `npm test` en `schema/` comprueba que no se ha separado del JSON, y
 `test/acheron.schema.test.mjs` comprueba aquí que los índices que el motor deriva de él (qué campos

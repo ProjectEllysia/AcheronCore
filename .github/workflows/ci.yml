@@ -27,7 +27,7 @@ jobs:
           node-version: "22"
 
       # El validador no tiene dependencias: corre con node a secas. Comprueba
-      # además que core-web/src/schema.js sigue siendo el espejo de schema.json.
+      # además que core-web/src/schema.ts sigue siendo el espejo de schema.json.
       - name: Validate
         run: npm test
 

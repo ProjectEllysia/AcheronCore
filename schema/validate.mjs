@@ -16,9 +16,9 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
-import { STORABLE_SCHEMA, SCHEMA_VERSION } from '../core-web/src/schema.js'
+import { STORABLE_SCHEMA, SCHEMA_VERSION } from '../core-web/src/schema.ts'
 
-// El contrato es el JSON; `core-web/src/schema.js` es su espejo generado, y es
+// El contrato es el JSON; `core-web/src/schema.ts` es su espejo generado, y es
 // lo que importa el motor web, que corre en el navegador. Se lee aqui el JSON
 // crudo para poder comparar los dos.
 const SCHEMA_DOCUMENT = JSON.parse(
@@ -86,7 +86,7 @@ for (const type of STORABLE_SCHEMA) {
   check(`${name}: category es un identificador`,
     typeof type.category === 'string' && IDENTIFIER.test(type.category), `= ${type.category}`)
   check(`${name}: no tiene claves de más`,
-    Object.keys(type).every((k) => ['kind', 'category', 'matchKey', 'fields'].includes(k)),
+    Object.keys(type).every((k) => ['kind', 'category', 'matchKey', 'identityKey', 'fields'].includes(k)),
     `claves: ${Object.keys(type).join(', ')}`)
 
   // matchKey senala QUE campo se compara con la URL de la pagina para decidir
@@ -101,6 +101,29 @@ for (const type of STORABLE_SCHEMA) {
       !(type.fields ?? []).some((f) => f.key === type.matchKey && f.secret),
       'un campo sensible no puede compararse con una URL en claro')
   }
+  // identityKey senala QUE campo es el identificador de acceso: lo que la
+  // extension escribe en la casilla de usuario al autocompletar. Sin el, un
+  // cliente tendria que adivinarlo por nombre o por descarte, y esa conjetura
+  // se rompe en silencio al crecer el catalogo: rellenaria el campo equivocado
+  // sin que fallara nada.
+  if ('identityKey' in type) {
+    check(`${name}: identityKey apunta a un campo que existe`,
+      (type.fields ?? []).some((f) => f.key === type.identityKey),
+      `identityKey = ${type.identityKey}`)
+    check(`${name}: identityKey no apunta a un campo secreto`,
+      !(type.fields ?? []).some((f) => f.key === type.identityKey && f.secret),
+      'el identificador de acceso se muestra en claro para elegir credencial')
+    check(`${name}: identityKey y matchKey son campos distintos`,
+      type.identityKey !== type.matchKey,
+      'el mismo campo no puede ser el dominio y el usuario')
+    // Un tipo con identificador pero sin campo comparable no se podria ofrecer
+    // en ninguna pagina, asi que declararlo seria prometer algo que no se
+    // puede cumplir.
+    check(`${name}: identityKey viene acompanado de matchKey`,
+      'matchKey' in type,
+      'un identificador de acceso sin campo comparable no sirve a nadie')
+  }
+
   check(`${name}: tiene al menos un campo`,
     Array.isArray(type.fields) && type.fields.length > 0)
 
@@ -144,12 +167,12 @@ for (const type of STORABLE_SCHEMA) {
 // Sin esto, `npm run generate` podria olvidarse tras editar el JSON y los
 // consumidores del navegador seguirian con el catalogo viejo, en silencio.
 check(
-  'core-web/src/schema.js coincide con schema.json',
+  'core-web/src/schema.ts coincide con schema.json',
   JSON.stringify(STORABLE_SCHEMA) === JSON.stringify(SCHEMA_DOCUMENT.types),
   'ejecuta `npm run generate`',
 )
 check(
-  'core-web/src/schema.js declara la misma version',
+  'core-web/src/schema.ts declara la misma version',
   SCHEMA_VERSION === SCHEMA_DOCUMENT.schemaVersion,
   `js=${SCHEMA_VERSION} json=${SCHEMA_DOCUMENT.schemaVersion}`,
 )

@@ -1,6 +1,6 @@
 /**
  * Vista que necesita la capa cripto: qué campos tiene cada categoría y las
- * correspondencias categoría↔kind. Se DERIVA de `schema.js`, la copia del
+ * correspondencias categoría↔kind. Se DERIVA de `schema.ts`, la copia del
  * catálogo compartido, para que no pueda divergir de la API ni del móvil.
  *
  * Cada campo aquí listado se cifra individualmente como Base64(IV‖ct). Además,

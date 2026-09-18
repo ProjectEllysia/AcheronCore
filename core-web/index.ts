@@ -41,5 +41,36 @@ export {
 
 export { STORABLE_SCHEMA, SCHEMA_VERSION } from './src/schema.js'
 
+/**
+ * La forma de todo lo que cruza esta frontera.
+ *
+ * Se reexporta porque, si no, no sale: un consumidor no puede llegar a
+ * `src/types.ts` ni por aquí ni por una ruta profunda, y acaba redeclarando
+ * `VaultJson` a mano. Eso es peor que duplicar código normal, porque la copia
+ * es compatible ESTRUCTURALMENTE: el día que el tipo cambie aquí, el consumidor
+ * seguirá compilando contra su copia vieja y el desacuerdo aparecerá en
+ * ejecución.
+ *
+ * Van con `export type` porque son sólo tipos: `verbatimModuleSyntax` está
+ * activado y un `export` normal intentaría reexportar en tiempo de ejecución
+ * algo que ahí no existe.
+ */
+export type {
+  AlgorithmBlock,
+  ApiFetch,
+  EncryptedStorable,
+  KdfName,
+  KdfParameter,
+  PasswordStrength,
+  PlainStorable,
+  RevisionContext,
+  StorablePayload,
+  VaultJson,
+  VaultSecrets,
+  VaultWriteResult,
+} from './src/types.js'
+
+export type { SchemaField, SchemaType } from './src/schemaTypes.js'
+
 export * from './src/passwordGenerator.js'
 export * from './src/passwordStrength.js'

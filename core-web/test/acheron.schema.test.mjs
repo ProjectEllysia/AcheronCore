@@ -45,10 +45,19 @@ check(
   `local=${SCHEMA_VERSION} contrato=${shared.schemaVersion}`,
 )
 
+// Las marcas van EN la comparación, y no es un detalle: `matchKey` e
+// `identityKey` son lo único que la extensión de navegador tiene para saber
+// qué credencial corresponde a una página y qué campo escribir como usuario.
+// Si se perdieran entre el JSON y el módulo generado, la extensión dejaría de
+// ofrecer credenciales —o rellenaría el campo equivocado— sin que fallara nada
+// aquí, que es exactamente el modo de fallo que este fichero existe para
+// impedir.
 const simplify = (types) =>
   types.map((t) => ({
     kind: t.kind,
     category: t.category,
+    matchKey: t.matchKey ?? null,
+    identityKey: t.identityKey ?? null,
     fields: t.fields.map((f) => (f.secret ? { key: f.key, secret: true } : { key: f.key })),
   }))
 

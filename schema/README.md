@@ -54,10 +54,13 @@ para el usuario.
 - **`matchKey`** — opcional; sólo lo tienen los tipos que se pueden asociar a una página web.
   Ver más abajo.
 
+- **`identityKey`** — opcional; qué campo es el identificador de acceso. Va siempre acompañado de
+  `matchKey`. Ver más abajo.
+
 Lo que **no** hay aquí, y no debe haberlo: etiquetas, plurales legibles, pistas de formulario,
 orden de presentación, iconos. Todo eso es de cada cliente. El validador lo impide activamente.
 
-**`generate.mjs`** escribe el mismo catálogo como módulo JavaScript en `core-web/src/schema.js`.
+**`generate.mjs`** escribe el mismo catálogo como módulo TypeScript en `core-web/src/schema.ts`.
 Existe porque un fichero JSON sólo se puede leer del disco, y el motor web —y la extensión de
 navegador que lo usa— corre donde no hay disco. Ese módulo no se edita a mano: se regenera con
 `npm run generate`, y `npm test` comprueba que no se ha separado del JSON.
@@ -86,6 +89,30 @@ El validador comprueba dos cosas sobre él. Que **apunte a un campo que existe**
 colgando no rompe nada al cargar, hace que la extensión no ofrezca *nunca* esa credencial, en
 silencio. Y que **no apunte a un campo secreto**: comparar un valor sensible contra una URL es
 sacarlo de su sitio.
+
+## `identityKey`: qué campo se escribe en la casilla de usuario
+
+Rellenar un formulario de acceso necesita **dos** campos, no uno. `matchKey` resuelve contra qué se
+compara la URL y `secret` resuelve cuál es la contraseña, pero el identificador de acceso no lo
+declaraba nada:
+
+```json
+{ "kind": "account", "category": "accounts", "matchKey": "domain", "identityKey": "username", ... }
+```
+
+Sin esta marca, un cliente sólo puede **adivinar**: por el nombre del campo —y entonces lleva
+escrito `username`, que es el acoplamiento que este repositorio elimina— o por descarte, quedándose
+con el campo que no es secreto ni comparable. La extensión lo hizo así durante un tiempo y
+funcionaba, pero el razonamiento dependía del **orden** de los campos y de que nunca apareciera un
+segundo campo no secreto. Al crecer el catálogo se habría roto en silencio: rellenaría el campo
+equivocado sin que fallara nada.
+
+El validador comprueba cuatro cosas. Que apunte a un campo que **existe**; que **no sea secreto**,
+porque el identificador se muestra en claro para que el usuario elija entre varias credenciales del
+mismo sitio; que **no sea el mismo campo que `matchKey`**, porque un campo no puede ser a la vez el
+dominio y el usuario; y que **venga acompañado de `matchKey`**, porque un tipo con identificador
+pero sin campo comparable no se podría ofrecer en ninguna página, y declararlo sería prometer algo
+que no se puede cumplir.
 
 ### La regla de comparación
 
@@ -122,7 +149,7 @@ del sitio donde está escrito.
 
 Añadir un tipo o un campo es un cambio de contrato entre varias implementaciones:
 
-1. **En este repositorio, un solo PR**: `schema.json`, el `core-web/src/schema.js` regenerado y los
+1. **En este repositorio, un solo PR**: `schema.json`, el `core-web/src/schema.ts` regenerado y los
    dos motores. Las tres suites tienen que pasar.
 2. **Se publica una versión** de AcheronCore, que saca los dos motores con el mismo número.
 3. **Después cada consumidor externo** sube a esa versión y actualiza su copia.
@@ -130,7 +157,7 @@ Añadir un tipo o un campo es un cambio de contrato entre varias implementacione
 ## Desarrollo
 
 ```bash
-npm test        # valida schema.json y su espejo en core-web/src/schema.js
+npm test        # valida schema.json y su espejo en core-web/src/schema.ts
 ```
 
 El validador comprueba la forma del documento (versión, claves permitidas), la unicidad de `kind`,

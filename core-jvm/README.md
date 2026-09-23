@@ -86,7 +86,7 @@ El `id` del `<server>` y el del `<repository>` deben coincidir.
 
 ## Publicar una versión
 
-Este paquete sale siempre a la vez que `@projectellysia/acheron-core-web` y con
+Este paquete sale siempre a la vez que `@projectellysia/acheron-core-js` y con
 el mismo número, desde un tag del repositorio; el procedimiento está en el
 [README de la raíz](../README.md#publicar-una-versión). En local, sin variables
 de entorno, la versión es `2.2.0-SNAPSHOT`.
